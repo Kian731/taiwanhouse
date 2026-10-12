@@ -1,0 +1,1001 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="跨國未婚伴侶的 2031 台灣買房規劃：頭期款試算、青安判讀、持分比較與完整購屋流程。">
+  <title>2031 台灣買房共識板</title>
+  <style>
+    :root {
+      --ink: #432f27;
+      --muted: #7a6459;
+      --paper: #f8eadb;
+      --white: #fffaf2;
+      --teal: #b75a3d;
+      --teal-dark: #833e2d;
+      --orange: #d96f45;
+      --yellow: #e9ad4f;
+      --sky: #e7a17c;
+      --pink: #e8927f;
+      --lilac: #c48a76;
+      --mint: #e6bd83;
+      --line: #e1c9b6;
+      --soft: #f4dfca;
+      --danger: #a64432;
+      --shadow: 0 18px 60px rgba(92, 53, 36, .12);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(104,63,43,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(104,63,43,.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px;
+      font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+    .wrap { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 24px; height: 3px; background: currentColor; border-radius: 9px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: -.035em; }
+    h1 { font-size: clamp(44px, 7.5vw, 88px); margin-bottom: 20px; }
+    h2 { font-size: clamp(30px, 4vw, 52px); margin-bottom: 16px; }
+    h3 { font-size: 22px; margin-bottom: 10px; }
+    .muted { color: var(--muted); }
+    .small { font-size: 13px; }
+    .num { font-variant-numeric: tabular-nums; }
+    .accent { color: var(--orange); }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(248,234,219,.92);
+      border-bottom: 1px solid rgba(92,53,36,.14);
+      backdrop-filter: blur(14px);
+    }
+    .nav {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 950; text-decoration: none; }
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: var(--white);
+      background: var(--teal);
+      border-radius: 11px 11px 16px 16px;
+      transform: rotate(-3deg);
+    }
+    .navlinks { display: flex; gap: 22px; align-items: center; }
+    .navlinks a { color: var(--muted); font-size: 14px; font-weight: 800; text-decoration: none; }
+    .navlinks a:hover { color: var(--teal); }
+
+    .hero { padding: 72px 0 42px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 42px; align-items: center; }
+    .hero-copy > p { max-width: 760px; color: var(--muted); font-size: 19px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      color: var(--ink);
+      background: transparent;
+      font-weight: 900;
+      text-decoration: none;
+    }
+    .btn.primary { color: white; background: var(--teal); border-color: var(--teal); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 9px 24px rgba(92,53,36,.16); }
+
+    .hero-copy { position: relative; }
+    .doodle {
+      position: absolute;
+      z-index: -1;
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 19px;
+      font-size: 25px;
+      transform: rotate(-8deg);
+      animation: bob 4s ease-in-out infinite;
+    }
+    .doodle.key { right: 8%; top: -28px; background: #ffdc85; }
+    .doodle.plant { right: -2%; bottom: 12px; background: #f5c99f; animation-delay: -1.5s; }
+    @keyframes bob { 50% { transform: translateY(-8px) rotate(6deg); } }
+
+    .house-card {
+      position: relative;
+      min-height: 400px;
+      padding: 92px 42px 34px;
+      color: white;
+      background: linear-gradient(145deg, #b85d40 0 58%, #934833 58% 100%);
+      border-radius: 160px 160px 30px 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .house-card:hover { transform: translateY(-5px) rotate(.4deg); box-shadow: 0 24px 70px rgba(133,66,42,.24); }
+    .house-card::before,
+    .house-card::after {
+      content: "";
+      position: absolute;
+      background: rgba(255,255,255,.09);
+      border-radius: 50%;
+    }
+    .house-card::before { width: 250px; height: 250px; right: -90px; top: -40px; }
+    .house-card::after { width: 150px; height: 150px; left: -45px; bottom: -40px; }
+    .house-card .year { position: relative; margin: 8px 0; font-size: 64px; font-weight: 950; line-height: 1; }
+    .house-card .label { position: relative; color: #ffe7d5; font-size: 15px; font-weight: 800; }
+    .mini-grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
+    .mini-stat { padding: 15px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.18); border-radius: 16px; }
+    .mini-stat strong { display: block; font-size: 22px; }
+
+    .verdict-strip { padding: 18px 0 68px; }
+    .verdicts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .verdict {
+      padding: 21px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(92,53,36,.06);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .verdict:nth-child(1) { border-top: 5px solid var(--mint); }
+    .verdict:nth-child(2) { border-top: 5px solid var(--yellow); }
+    .verdict:nth-child(3) { border-top: 5px solid var(--pink); }
+    .verdict:hover { transform: translateY(-4px); border-color: var(--teal); }
+    .verdict strong { display: block; margin-bottom: 7px; font-size: 18px; }
+    .verdict .icon { float: right; font-size: 24px; }
+
+    section { padding: 82px 0; }
+    .section-head { display: grid; grid-template-columns: .75fr 1.25fr; gap: 36px; align-items: end; margin-bottom: 36px; }
+    .section-head p { color: var(--muted); margin-bottom: 4px; }
+
+    .calculator {
+      display: block;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .controls { padding: 34px; border-bottom: 1px solid var(--line); }
+    .plan-controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .control { margin-bottom: 24px; }
+    .control label { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 14px; font-weight: 900; }
+    .control output { color: var(--teal); }
+    input[type="range"] { width: 100%; accent-color: var(--teal); cursor: pointer; }
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fff;
+    }
+    .manual-entry { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); white-space: nowrap; }
+    .manual-entry input[type="number"] { width: 96px; padding: 7px 9px; border: 2px solid #dfc1ad; border-radius: 10px; color: var(--teal-dark); font-weight: 950; text-align: right; }
+    .manual-entry input[type="number"]:focus { border-color: var(--teal); }
+    .manual-entry .suffix { font-size: 12px; }
+    .control-hint { margin: -4px 0 0; color: var(--muted); font-size: 12px; }
+    .budget-profiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 26px; }
+    .budget-profile { padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+    .budget-profile.malaysia { background: #fff6df; box-shadow: inset 0 5px 0 #e7aa49; }
+    .budget-profile.taiwan { background: #fff0e7; box-shadow: inset 0 5px 0 #d98361; }
+    .budget-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .budget-title h3 { margin: 0; font-size: 20px; }
+    .budget-profile .control { margin-bottom: 18px; }
+    .budget-profile .control:last-of-type { margin-bottom: 14px; }
+    .net-preview { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin: 8px 0 20px; padding: 12px 14px; border-radius: 13px; background: #f4dfc9; }
+    .net-preview span { color: var(--muted); font-size: 12px; font-weight: 800; }
+    .net-preview strong { font-size: 22px; }
+    .budget-total { display: flex; justify-content: space-between; gap: 12px; padding-top: 13px; border-top: 1px dashed var(--line); font-weight: 900; }
+    .budget-total strong { color: var(--teal); }
+    .result { padding: 34px; background: linear-gradient(145deg, #f8e3d3, #f4d7c4); }
+    .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+    .result-card { padding: 20px; background: var(--white); border: 1px solid #ddc4b2; border-radius: 17px; transition: transform .2s ease; }
+    .result-card:hover { transform: translateY(-3px); }
+    .result-card span { display: block; color: var(--muted); font-size: 13px; font-weight: 800; }
+    .result-card strong { display: block; margin-top: 4px; font-size: clamp(24px, 3vw, 36px); }
+    .result-card.hero-result { color: #fffaf2; background: #93432f; border-color: #93432f; }
+    .result-card.hero-result span,
+    .result-card.hero-result small { color: #fffaf2; }
+    .result-card.person-malaysia { background: #fff0c9; border-color: #e9bf69; }
+    .result-card.person-taiwan { background: #fbe3d5; border-color: #dda286; }
+    .result-card small { display: block; min-height: 1.5em; color: var(--muted); font-size: 11px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 20px; }
+    .metric { padding: 13px 14px; border: 1px dashed #c99e86; border-radius: 14px; background: rgba(255,250,242,.78); }
+    .metric span { display: block; color: var(--muted); font-size: 11px; font-weight: 800; }
+    .metric strong { display: block; margin-top: 2px; font-size: 18px; }
+    .progress-box { padding: 20px; background: var(--white); border: 1px solid #ddc4b2; border-radius: 17px; }
+    .progress-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; font-weight: 850; }
+    .progress { height: 13px; background: #ead3c4; border-radius: 999px; overflow: hidden; }
+    .progress span { display: block; width: 0; height: 100%; background: var(--orange); border-radius: inherit; transition: width .35s ease; }
+    .callout { margin-top: 16px; padding: 15px 17px; border-left: 4px solid var(--yellow); background: #fff1d5; border-radius: 7px 14px 14px 7px; }
+
+    .profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
+    .profile { padding: 28px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
+    .profile:first-child { box-shadow: inset 0 6px 0 #f0c85d; }
+    .profile:nth-child(2) { box-shadow: inset 0 6px 0 #d98361; }
+    .profile-top { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
+    .passport { display: inline-flex; padding: 6px 10px; border-radius: 999px; background: var(--soft); color: var(--teal-dark); font-size: 12px; font-weight: 950; }
+    .takehome { margin: 22px 0 4px; font-size: clamp(32px, 4vw, 48px); font-weight: 950; }
+    .profile ul { margin: 20px 0 0; padding-left: 20px; color: var(--muted); }
+
+    .policy-banner {
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 32px;
+      padding: 34px;
+      color: white;
+      background: var(--ink);
+      border-radius: var(--radius);
+    }
+    .policy-banner .deadline { font-size: clamp(38px, 6vw, 76px); font-weight: 950; line-height: 1; color: var(--yellow); }
+    .policy-banner p { color: #f0d9cc; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .pill { display: inline-flex; padding: 7px 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; font-size: 13px; font-weight: 850; }
+
+    .table-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    th, td { padding: 18px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); background: #fbecdf; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr.recommended { background: #fff0e3; }
+    .tag { display: inline-flex; padding: 4px 8px; border-radius: 7px; font-size: 11px; font-weight: 950; color: white; background: var(--orange); }
+    .good { color: var(--teal-dark); font-weight: 900; }
+    .warn { color: var(--danger); font-weight: 900; }
+
+    .payment-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 24px; }
+    .payment { padding: 28px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+    .payment-price { font-size: 36px; font-weight: 950; }
+    .payment-lines { display: grid; gap: 10px; margin-top: 18px; }
+    .payment-line { display: flex; justify-content: space-between; gap: 18px; padding-top: 10px; border-top: 1px dashed var(--line); }
+
+    .timeline { position: relative; display: grid; gap: 0; margin-top: 20px; }
+    .timeline::before { content: ""; position: absolute; left: 89px; top: 30px; bottom: 30px; width: 2px; background: var(--line); }
+    .time-row { position: relative; display: grid; grid-template-columns: 72px 34px 1fr; gap: 16px; align-items: start; padding: 18px 0; }
+    .time-year { font-size: 18px; font-weight: 950; text-align: right; }
+    .dot { width: 16px; height: 16px; margin: 5px auto 0; border: 4px solid var(--paper); border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 2px var(--orange); z-index: 1; }
+    .time-card { padding: 20px 22px; background: var(--white); border: 1px solid var(--line); border-radius: 18px; }
+    .time-card p { margin-bottom: 0; color: var(--muted); }
+
+    .journey { counter-reset: step; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .journey article { position: relative; padding: 28px 28px 28px 78px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; }
+    .journey article::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      left: 22px;
+      top: 24px;
+      color: var(--orange);
+      font-size: 22px;
+      font-weight: 950;
+    }
+    .journey p { margin-bottom: 0; color: var(--muted); }
+
+    .step-detail {
+      margin-top: 18px;
+      background: transparent;
+      border: 0;
+      border-radius: 13px;
+    }
+    .step-detail + .step-detail { margin-top: 18px; }
+    .step-detail summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 14px;
+      color: var(--teal-dark);
+      background: #f4dfca;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      list-style: none;
+      font-size: 14px;
+    }
+    .step-detail summary::-webkit-details-marker { display: none; }
+    .step-detail summary::after { content: "+"; font-size: 20px; line-height: 1; }
+    .step-detail[open] summary { background: #edcdb7; border-radius: 12px 12px 0 0; }
+    .step-detail[open] summary::after { content: "−"; }
+    .step-detail > div {
+      padding: 14px;
+      color: var(--muted);
+      background: #fff8ee;
+      border: 1px solid var(--line);
+      border-top: 0;
+      border-radius: 0 0 12px 12px;
+    }
+    .step-detail > div p { margin: 0; }
+    .step-detail > div p + p { margin-top: 10px; }
+    .step-detail strong { color: var(--ink); }
+
+    .after-buy { background: rgba(255,250,242,.42); }
+    .after-tasks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .after-task {
+      position: relative;
+      min-height: 246px;
+      padding: 24px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .after-task::after {
+      content: attr(data-icon);
+      position: absolute;
+      right: 14px;
+      bottom: -8px;
+      font-size: 58px;
+      opacity: .14;
+      transform: rotate(-8deg);
+    }
+    .after-task:nth-child(1) { box-shadow: inset 0 5px 0 #dc8462; }
+    .after-task:nth-child(2) { box-shadow: inset 0 5px 0 #e9ad4f; }
+    .after-task:nth-child(3) { box-shadow: inset 0 5px 0 #c77458; }
+    .after-task:nth-child(4) { box-shadow: inset 0 5px 0 #bd7a5f; }
+    .after-task .when { display: inline-flex; margin-bottom: 14px; color: var(--teal-dark); font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+    .after-task h3 { font-size: 20px; }
+    .after-task ul { position: relative; z-index: 1; margin: 14px 0 0; padding-left: 19px; color: var(--muted); font-size: 14px; }
+    .after-task li + li { margin-top: 7px; }
+
+    .holding-tool {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 0;
+      margin-top: 24px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .holding-controls { padding: 30px; }
+    .holding-controls h3 { margin-bottom: 6px; }
+    .holding-controls > p { color: var(--muted); font-size: 14px; }
+    .holding-controls .control:last-child { margin-bottom: 0; }
+    .holding-results { padding: 30px; background: linear-gradient(145deg, #f2d7c2, #ecc6ae); }
+    .cost-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .cost-card { padding: 17px; background: var(--white); border: 1px solid #dcbda7; border-radius: 15px; }
+    .cost-card span { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
+    .cost-card strong { display: block; margin-top: 4px; font-size: 24px; }
+    .cost-card.total { grid-column: 1 / -1; color: white; background: #93432f; border-color: #93432f; }
+    .cost-card.total span { color: #ffe8da; }
+    .holding-note { margin: 16px 0 0; padding: 14px 16px; color: var(--muted); background: rgba(255,250,242,.82); border-left: 4px solid var(--yellow); border-radius: 7px 13px 13px 7px; font-size: 13px; }
+
+    details { background: var(--white); border: 1px solid var(--line); border-radius: 16px; }
+    details + details { margin-top: 10px; }
+    summary { padding: 18px 20px; font-weight: 900; cursor: pointer; }
+    summary:hover { color: var(--teal); }
+    details > div { padding: 0 20px 20px; color: var(--muted); }
+    .checkgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 22px; margin: 0; padding-left: 20px; }
+
+    .decision {
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 34px;
+      padding: 38px;
+      border-radius: var(--radius);
+      color: white;
+      background: var(--teal);
+    }
+    .decision p, .decision li { color: #f4ddd0; }
+    .decision ol { margin: 0; padding-left: 20px; }
+    .decision li + li { margin-top: 12px; }
+
+    .sources { font-size: 14px; }
+    .source-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0; list-style: none; }
+    .source-list a { display: block; height: 100%; padding: 15px 16px; border: 1px solid var(--line); border-radius: 13px; background: var(--white); text-decoration: none; }
+    .source-list a:hover { border-color: var(--teal); color: var(--teal); }
+
+    footer { padding: 36px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+
+    /* 使用較清楚的系統黑體，避免瀏覽器合成 900–950 字重後筆畫糊在一起。 */
+    h1, h2, h3, .brand, .eyebrow, .btn, .control label, .budget-title,
+    .budget-total, .result-card span, .progress-label, summary, .good, .warn,
+    .passport, .tag { font-weight: 700; }
+    .house-card .year, .mini-stat strong, .result-card strong, .takehome,
+    .deadline, .payment-price, .time-year, .journey article::before { font-weight: 800; }
+
+    @media (max-width: 900px) {
+      .navlinks { display: none; }
+      .hero-grid, .section-head, .policy-banner, .decision { grid-template-columns: 1fr; }
+      .house-card { min-height: 390px; padding: 76px 30px 28px; border-radius: 110px 110px 26px 26px; }
+      .verdicts { grid-template-columns: 1fr; }
+      .budget-profiles { grid-template-columns: 1fr; }
+      .journey { grid-template-columns: 1fr; }
+      .after-tasks { grid-template-columns: repeat(2, 1fr); }
+      .holding-tool { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 24px, 1180px); }
+      .hero { padding-top: 44px; }
+      section { padding: 58px 0; }
+      .profiles, .payment-cards, .result-grid, .metrics-grid, .source-list, .checkgrid, .plan-controls { grid-template-columns: 1fr; }
+      .control label { align-items: flex-start; }
+      .manual-entry input[type="number"] { width: 82px; }
+      .doodle { display: none; }
+      .calculator, .profile, .payment, .policy-banner, .decision { border-radius: 18px; }
+      .controls, .result, .policy-banner, .decision { padding: 22px; }
+      .timeline::before { left: 64px; }
+      .time-row { grid-template-columns: 49px 28px 1fr; gap: 9px; }
+      .time-year { font-size: 15px; }
+      .time-card { padding: 17px; }
+      .journey article { padding-left: 64px; }
+      .after-tasks, .cost-grid { grid-template-columns: 1fr; }
+      .cost-card.total { grid-column: auto; }
+      .after-task { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="主要導覽">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">⌂</span><span>2031 買房共識板</span></a>
+      <div class="navlinks">
+        <a href="#money">頭期款</a>
+        <a href="#loan">貸款持分</a>
+        <a href="#route">行程</a>
+        <a href="#after-buy">買後待辦</a>
+        <a href="#check">注意事項</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="doodle key" aria-hidden="true">🔑</span>
+          <span class="doodle plant" aria-hidden="true">🌱</span>
+          <p class="eyebrow">Taiwan home plan · 2026 → 2031</p>
+          <h1>先把房子，<br><span class="accent">變成一條路。</span></h1>
+          <p>為一位馬來西亞籍、一位台灣戶籍、未婚且首次購屋的兩人，整理成看得懂、算得動、能照著走的買房計畫。</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#money">先算頭期款 →</a>
+            <a class="btn" href="#loan">比較貸款方式</a>
+          </div>
+        </div>
+        <aside class="house-card" aria-label="購屋目標摘要">
+          <div class="label">目標申貸年份</div>
+          <div class="year">2031</div>
+          <div class="label">電梯大樓 · 總價 NT$1,000–1,200 萬</div>
+          <div class="mini-grid">
+            <div class="mini-stat"><span class="label">建議備現金</span><strong>280–336 萬</strong></div>
+            <div class="mini-stat"><span class="label">合計月實領估</span><strong id="heroCombinedNet">86,445</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="verdict-strip">
+      <div class="wrap verdicts">
+        <article class="verdict"><span class="icon" aria-hidden="true">✓</span><strong>馬來西亞籍可登記</strong><span class="muted small">馬來西亞屬完全平等互惠國，仍須走外國人取得土地的登記程序。</span></article>
+        <article class="verdict"><span class="icon" aria-hidden="true">!</span><strong>2031 青安未知</strong><span class="muted small">現行青安 3.0 只受理至 2029/07/31，不可先把補貼當成確定收入。</span></article>
+        <article class="verdict"><span class="icon" aria-hidden="true">↗</span><strong>1,000 萬較接近</strong><span class="muted small">只靠未來收入、無既有存款時，1,200 萬需要更高儲蓄或延後時程。</span></article>
+      </div>
+    </div>
+
+    <section id="money">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">01 · MONEY</p><h2>頭期款能不能到位？</h2></div>
+          <p>用目前已知條件做保守基準：不算加薪、獎金、定存利息，也不假設房價不變。美元定存視為你們的資產累積，不重複列為消費。</p>
+        </div>
+
+        <div class="calculator" aria-label="頭期款試算器">
+          <div class="controls">
+            <div class="plan-controls">
+              <div class="control">
+                <label for="price"><span>房屋總價</span><span class="manual-entry"><input id="priceManual" type="number" min="500" max="3000" step="10" value="1000" inputmode="numeric" aria-label="手動輸入房屋總價"><span class="suffix">萬</span></span></label>
+                <input id="price" type="range" min="5000000" max="30000000" step="100000" value="10000000">
+                <p class="control-hint">可調範圍：500–3,000 萬</p>
+              </div>
+              <div class="control">
+                <label for="months"><span>累積月數</span><span class="manual-entry"><input id="monthsManual" type="number" min="12" max="120" step="1" value="51" inputmode="numeric" aria-label="手動輸入累積月數"><span class="suffix">個月</span></span></label>
+                <input id="months" type="range" min="12" max="120" step="1" value="51">
+                <p class="control-hint">可調範圍：1–10 年</p>
+              </div>
+            </div>
+
+            <div class="budget-profiles" aria-label="兩人個別收支設定">
+              <article class="budget-profile malaysia">
+                <div class="budget-title"><h3>🇲🇾 馬來西亞籍</h3><span class="passport">1993 · 租屋</span></div>
+                <div class="control">
+                  <label for="malSalary"><span>月薪（稅前）</span><span class="manual-entry"><span class="suffix">NT$</span><input id="malSalaryManual" type="number" min="20000" max="200000" step="1000" value="50000" inputmode="numeric" aria-label="手動輸入馬來西亞籍稅前月薪"></span></label>
+                  <input id="malSalary" type="range" min="20000" max="200000" step="1000" value="50000">
+                </div>
+                <div class="net-preview"><span>估計每月實領</span><strong id="malNet">48,070</strong></div>
+                <div class="control">
+                  <label for="malRent"><span>租金含水電／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="malRentManual" type="number" min="0" max="60000" step="500" value="12000" inputmode="numeric" aria-label="手動輸入馬來西亞籍每月租金含水電"></span></label>
+                  <input id="malRent" type="range" min="0" max="60000" step="500" value="12000">
+                </div>
+                <div class="control">
+                  <label for="usdMonthly"><span>美元定存月提撥</span><span class="manual-entry"><span class="suffix">NT$</span><input id="usdMonthlyManual" type="number" min="0" max="30000" step="100" value="8512" inputmode="numeric" aria-label="手動輸入美元定存每月提撥金額"></span></label>
+                  <input id="usdMonthly" type="range" min="0" max="30000" step="1" value="8512">
+                  <p class="control-hint">3,202 美元／年 ÷ 12，按 31.9 換算約 8,512 元；此項是儲蓄分配，不重複扣除。</p>
+                </div>
+                <div class="control">
+                  <label for="malLiving"><span>其他生活費／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="malLivingManual" type="number" min="0" max="100000" step="500" value="13000" inputmode="numeric" aria-label="手動輸入馬來西亞籍每月其他生活費"></span></label>
+                  <input id="malLiving" type="range" min="0" max="100000" step="500" value="13000">
+                </div>
+                <div class="control">
+                  <label for="malExisting"><span>目前可用存款</span><span class="manual-entry"><input id="malExistingManual" type="number" min="0" max="1000" step="1" value="0" inputmode="numeric" aria-label="手動輸入馬來西亞籍目前可用存款"><span class="suffix">萬</span></span></label>
+                  <input id="malExisting" type="range" min="0" max="10000000" step="10000" value="0">
+                </div>
+                <div class="budget-total"><span>每月可存</span><strong id="malBudgetSave">23,070</strong></div>
+              </article>
+
+              <article class="budget-profile taiwan">
+                <div class="budget-title"><h3>🇹🇼 台灣戶籍</h3><span class="passport">1991 · 住家裡</span></div>
+                <div class="control">
+                  <label for="twSalary"><span>月薪（稅前）</span><span class="manual-entry"><span class="suffix">NT$</span><input id="twSalaryManual" type="number" min="20000" max="200000" step="1000" value="40000" inputmode="numeric" aria-label="手動輸入台灣籍稅前月薪"></span></label>
+                  <input id="twSalary" type="range" min="20000" max="200000" step="1000" value="40000">
+                </div>
+                <div class="net-preview"><span>估計每月實領</span><strong id="twNet">38,375</strong></div>
+                <div class="control">
+                  <label for="twRent"><span>租金／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="twRentManual" type="number" min="0" max="60000" step="500" value="0" inputmode="numeric" aria-label="手動輸入台灣籍每月租金"></span></label>
+                  <input id="twRent" type="range" min="0" max="60000" step="500" value="0">
+                  <p class="control-hint">目前住家裡，預設為 0；未來租屋可直接調整。</p>
+                </div>
+                <div class="control">
+                  <label for="twLiving"><span>其他生活費／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="twLivingManual" type="number" min="0" max="100000" step="500" value="12000" inputmode="numeric" aria-label="手動輸入台灣籍每月其他生活費"></span></label>
+                  <input id="twLiving" type="range" min="0" max="100000" step="500" value="12000">
+                </div>
+                <div class="control">
+                  <label for="twExisting"><span>目前可用存款</span><span class="manual-entry"><input id="twExistingManual" type="number" min="0" max="1000" step="1" value="0" inputmode="numeric" aria-label="手動輸入台灣籍目前可用存款"><span class="suffix">萬</span></span></label>
+                  <input id="twExisting" type="range" min="0" max="10000000" step="10000" value="0">
+                </div>
+                <div class="budget-total"><span>每月可存</span><strong id="twBudgetSave">26,375</strong></div>
+              </article>
+            </div>
+            <p class="small muted" style="margin-bottom:0">目前可用存款會直接加入各自的累積資產。實領依原始薪資的估算比例連動，適合做規劃；勞健保級距並非線性，薪資變動後請以實際薪資單校正。</p>
+          </div>
+          <div class="result" aria-live="polite">
+            <div class="result-grid">
+              <div class="result-card hero-result"><span>兩人預估累積資產</span><strong id="saved">252 萬</strong><small>已包含目前可用存款</small></div>
+              <div class="result-card person-malaysia"><span>馬來西亞籍累積資產</span><strong id="malSaved">118 萬</strong><small id="malMonthly">每月約 23,070</small></div>
+              <div class="result-card person-taiwan"><span>台灣籍累積資產</span><strong id="twSaved">135 萬</strong><small id="twMonthly">每月約 26,375</small></div>
+              <div class="result-card"><span>建議購屋現金目標 28%</span><strong id="target">280 萬</strong></div>
+              <div class="result-card"><span>其中：20% 頭期</span><strong id="down">200 萬</strong></div>
+              <div class="result-card"><span>交易／整備／風險緩衝 8%</span><strong id="buffer">80 萬</strong></div>
+            </div>
+            <div class="metrics-grid" aria-label="其他試算數據">
+              <div class="metric"><span>兩人合計實領／月</span><strong id="combinedNet">86,445</strong></div>
+              <div class="metric"><span>必要支出／月</span><strong id="essentialCost">37,000</strong></div>
+              <div class="metric"><span>兩人合計可存／月</span><strong id="monthlySaving">49,445</strong></div>
+              <div class="metric"><span>合計儲蓄率</span><strong id="savingRate">57%</strong></div>
+              <div class="metric"><span>美元定存累積</span><strong id="usdAsset">43 萬</strong></div>
+              <div class="metric"><span>達 28% 目標約需</span><strong id="monthsToTarget">57 個月</strong></div>
+            </div>
+            <div class="progress-box">
+              <div class="progress-label"><span id="gapLabel">距離完整目標還差 28 萬</span><span id="ratio">90%</span></div>
+              <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+              <div class="callout" id="moneyAdvice">目前設定下，頭期款本身可達成；但交屋費用與安全預備金仍不足。可增加每月儲蓄約 5,500 元，或補入既有存款。</div>
+            </div>
+          </div>
+        </div>
+
+        <p class="small muted" style="margin-top:14px">實領僅供規劃：依原始條件與 2026 年勞／健保級距比例推估、本人無眷屬、無勞退自提；未計所得稅、公司福利或其他代扣。馬來西亞籍若當年度在台未滿 183 天，薪資扣繳可能不同，請以實際薪資單為準。</p>
+      </div>
+    </section>
+
+    <section id="loan">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">02 · LOAN & OWNERSHIP</p><h2>貸款和持分要一起決定</h2></div>
+          <p>青安額度不是「拿得到的貸款」，只是優惠上限；銀行仍會審查收入、信用與房屋。你們未婚，誰持有、誰出錢、誰負債，最好在付斡旋金前寫成同一份共識。</p>
+        </div>
+
+        <div class="policy-banner">
+          <div><div class="small">現行青安 3.0 受理截止</div><div class="deadline">2029<br>07.31</div></div>
+          <div>
+            <h3>2031 的正確規劃：先當作「沒有青安」</h3>
+            <p>目前方案一般對象最高 1,000 萬、最高 8 成、最長 40 年、寬限最長 5 年；申貸時未滿 50 歲、個人年所得不逾 200 萬，且本人／配偶／未成年子女無自有住宅。新婚 2 年內最高 1,200 萬，育兒家庭最高 1,500 萬。</p>
+            <div class="pill-row"><span class="pill">限本國人民</span><span class="pill">限貸一次</span><span class="pill">必須自住</span><span class="pill">實際成數由銀行核定</span></div>
+            <p class="small">你們維持未婚時，台灣籍者仍可用「單身」身分申請；馬來西亞籍者不能成為青安借款人。現行約 1.775% 是初期利率，不是 40 年固定：以目前基準推算，優惠會逐年退場至約 1.9%、2.025%、2.15%，第 7 年起回到約 2.275%，基準利率變動時也會跟著變。若 2031 有續案，仍要以當時新規則重新檢查。</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>安排</th><th>登記持分</th><th>現行青安可用上限*</th><th>銀行看收入</th><th>優點</th><th>主要風險／判斷</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>台灣籍單獨持有、單獨借款</strong></td><td>100%／0%</td><td class="good">最高 1,000 萬</td><td>主要只看 38,375 實領</td><td>青安額度完整、流程較單純</td><td><span class="warn">單靠 4 萬薪資很可能撐不起 800–960 萬貸款；</span>另一方出錢卻沒有產權，未婚保障最弱。</td>
+              </tr>
+              <tr class="recommended">
+                <td><strong>台灣主借、共同持有</strong><br><span class="tag">折衷案先詢價</span></td><td>例如 80%／20%</td><td class="good">約 800 萬</td><td>能否納入外籍伴侶收入由銀行審核</td><td>保留多數青安額度，也讓外籍方有登記權利</td><td>所有共有人持分都要一併抵押；持分應盡量對應實際出資，並先做書面協議。</td>
+              </tr>
+              <tr>
+                <td><strong>共同持有、共同承擔一般房貸</strong></td><td>50%／50%</td><td>若只有台灣方合格，約 500 萬；其餘一般貸款</td><td>較有機會同時呈現兩人收入，仍看銀行</td><td>權利較對等，和共同出資較一致</td><td>優惠較少；外籍文件與銀行內規可能使審核較久。</td>
+              </tr>
+              <tr>
+                <td><strong>各自向不同銀行借</strong></td><td>任意</td><td>外籍方 0</td><td>分開看</td><td>表面上各自負責</td><td><span class="warn">通常不實際。</span>同一房地涉及抵押順位，實務多由同一家銀行做主借／共同借款，而非拆成兩筆第一順位房貸。</td>
+              </tr>
+              <tr>
+                <td><strong>馬來西亞籍單獨持有、一般房貸</strong></td><td>0%／100%</td><td>0</td><td>看 48,070 與居留、工作、信用資料</td><td>產權與外籍方出資一致</td><td>不能用青安；核貸成數、期限與文件由各銀行個案審查。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small muted">* 依現行青安 3.0「只有一位共有人符合資格」的規則，優惠額度會按該人的建物持分比例計算。例：持分 1/2，1,000 萬上限會變成 500 萬。2031 若續辦，規則可能改變。</p>
+
+        <div class="payment-cards">
+          <article class="payment">
+            <div class="small muted">總價 1,000 萬 · 貸 8 成</div>
+            <div class="payment-price">貸款 800 萬</div>
+            <div class="payment-lines">
+              <div class="payment-line"><span>以現行優惠 1.775%、40 年示意</span><strong>約 23,289／月</strong></div>
+              <div class="payment-line"><span>規劃壓力測試 3%、40 年</span><strong>約 28,639／月</strong></div>
+              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong>33%</strong></div>
+              <div class="payment-line"><span>占台灣方實領（3%）</span><strong class="warn">75%</strong></div>
+            </div>
+          </article>
+          <article class="payment">
+            <div class="small muted">總價 1,200 萬 · 貸 8 成</div>
+            <div class="payment-price">貸款 960 萬</div>
+            <div class="payment-lines">
+              <div class="payment-line"><span>以現行優惠 1.775%、40 年示意</span><strong>約 27,947／月</strong></div>
+              <div class="payment-line"><span>規劃壓力測試 3%、40 年</span><strong>約 34,367／月</strong></div>
+              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong>40%</strong></div>
+              <div class="payment-line"><span>占台灣方實領（3%）</span><strong class="warn">90%</strong></div>
+            </div>
+          </article>
+        </div>
+        <p class="small muted">本息平均攤還試算，不含寬限期、管理費、房屋稅、地價稅、保險與修繕。1.775% 是目前青安補貼初期的參考利率，不是 2031 保證利率。</p>
+      </div>
+    </section>
+
+    <section id="route">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">03 · ROADMAP</p><h2>五年行程，不用一次懂完</h2></div>
+          <p>把工作拆到對的年份。越早做信用與資金紀錄，2031 跟銀行談判時越有底氣。</p>
+        </div>
+        <div class="timeline">
+          <div class="time-row"><div class="time-year">2026</div><div class="dot"></div><div class="time-card"><h3>建立共同帳本</h3><p>確認兩人各自出資比例；保存美元定存、薪轉、租金與每月儲蓄紀錄。信用卡全額繳清，不新增信貸。</p></div></div>
+          <div class="time-row"><div class="time-year">2027</div><div class="dot"></div><div class="time-card"><h3>先把法律問題談清楚</h3><p>決定「權利按出資」或其他分配方式；若未婚共同購屋，請律師或地政士準備共有人協議、退出／買回條款、費用分攤與遺囑。</p></div></div>
+          <div class="time-row"><div class="time-year">2028</div><div class="dot"></div><div class="time-card"><h3>做第一次銀行預審</h3><p>找 2–3 家公股銀行與 1–2 家一般銀行，用 100/0、80/20、50/50 三種持分各問一次「可認列收入、額度、成數、期限」。不要只問利率。</p></div></div>
+          <div class="time-row"><div class="time-year">2029</div><div class="dot"></div><div class="time-card"><h3>政策檢查點</h3><p>現行青安 3.0 在 7/31 截止。這一年確認是否續辦、年齡／所得／房價限制及共同持有規則；沒有公告就維持一般房貸預算。</p></div></div>
+          <div class="time-row"><div class="time-year">2030</div><div class="dot"></div><div class="time-card"><h3>鎖定區域與社區</h3><p>用實價登錄建立 10–15 個社區清單，累積看屋紀錄；同步預留交屋費、裝修與至少 6 個月生活緊急金。</p></div></div>
+          <div class="time-row"><div class="time-year">2031</div><div class="dot"></div><div class="time-card"><h3>預審後再出價</h3><p>先拿銀行初估，再看屋、議價。斡旋／要約寫入「貸款不足可解約或調整」條款；正式簽約前確認持分、借款人與付款來源一致。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">04 · BUYING FLOW</p><h2>真的開始買時，照這 8 步</h2></div>
+          <p>先審自己、再審房子，最後才簽約。任何口頭承諾都要落在契約裡。</p>
+        </div>
+        <div class="journey">
+          <article>
+            <h3>共同條件表</h3><p>總價上限、區域、通勤、屋齡、坪數、車位、管理費、可接受修繕額，各自列「必要／加分／不要」。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>看屋現場很容易被裝潢或仲介話術帶走，也容易讓兩人的底線越看越不同。</p><p><strong>怎麼做：</strong>各自先寫清單，再合併成一頁；除了總價，也要設定「房貸＋管理費＋稅金＋修繕」的每月上限。</p><p><strong>完成後得到：</strong>一份可以直接淘汰物件的共同規則，降低衝動出價與爭執。</p></div></details>
+          </article>
+          <article>
+            <h3>銀行預審</h3><p>備妥薪轉、扣繳憑單／所得清單、勞保、存款、ARC／護照與信用資料，請銀行書面試算可貸額與月付。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>成交價不等於銀行鑑價，廣告成數也不等於你們實際能貸到的金額；外籍收入能否認列，各銀行也不同。</p><p><strong>怎麼做：</strong>同時問 3–5 家銀行，分別試算 100/0、80/20、50/50 持分，逐項問成數、期限、利率、寬限、提前清償、費用與外籍文件。</p><p><strong>完成後得到：</strong>真正可承擔的出價上限，以及哪種持分與借款安排最可行。</p></div></details>
+          </article>
+          <article>
+            <h3>看屋與查價</h3><p>用實價登錄看同社區、同樓層／坪數的成交；白天、晚上、雨天各去一次，問鄰居比問廣告更有用。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>開價只是賣方期待，不是市價；採光、噪音、漏水與社區管理也很難只看一次就發現。</p><p><strong>怎麼做：</strong>比較同社區近 1–2 年成交，車位價格分開看；每間都用同一張表打分，並在不同時段與雨後複看。</p><p><strong>完成後得到：</strong>合理成交區間、可比較的候選清單，以及具體議價理由。</p></div></details>
+          </article>
+          <article>
+            <h3>產權與屋況</h3><p>調土地／建物謄本、地籍圖、使用執照；確認抵押、查封、持分、車位、違建、漏水、管線與管委會紀錄。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>抵押、查封、違建、漏水與大樓公共工程，都可能讓你們無法順利過戶或在入住後多付大筆費用。</p><p><strong>怎麼做：</strong>由地政士核對謄本與權利範圍；索取使用執照、管委會紀錄與公共基金資料，簽約前安排專業驗屋。</p><p><strong>完成後得到：</strong>一張「法律風險＋修繕預算」清單，可用來決定放棄、減價或加契約條款。</p></div></details>
+          </article>
+          <article>
+            <h3>出價／斡旋</h3><p>設定有效期限、付款方式、附帶條件與貸款不足處理方式。沒有讀懂，不簽空白文件，也不讓斡旋金直接變定金。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>斡旋書或要約書一旦成立，可能產生契約與金錢責任，不只是「先幫我問問」。</p><p><strong>怎麼做：</strong>寫明物件與車位、出價期限、付款節點、貸款不足如何處理、賣方應揭露事項，以及斡旋金何時才能轉為定金。</p><p><strong>完成後得到：</strong>一個金額、時間與退出條件都有邊界的正式出價。</p></div></details>
+          </article>
+          <article>
+            <h3>簽約與履保</h3><p>找地政士，使用履約保證或價金信託；契約清楚寫持分、現況交屋、瑕疵處理、稅費、點交與違約責任。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>付款與產權移轉不同步時風險最高；你們又是未婚共同購屋，更不能只靠口頭說好。</p><p><strong>怎麼做：</strong>讓地政士或律師逐條核對，將持分、兩人付款來源、瑕疵、稅費、交屋條件、違約與退出機制寫入文件，款項走履保。</p><p><strong>完成後得到：</strong>可執行的責任分配、可追蹤的資金流，以及較安全的價金交付。</p></div></details>
+          </article>
+          <article>
+            <h3>貸款與過戶</h3><p>銀行鑑價、對保、設定抵押；外籍買方準備身分與互惠文件。完成稅費、移轉登記、實價登錄與撥款。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>銀行鑑價可能低於成交價，外籍文件也可能拉長作業；任何落差都會增加臨時自備款。</p><p><strong>怎麼做：</strong>確認最終額度、利率、年限、開辦費與撥款條件；由地政士列出稅費與登記時程，雙方逐筆核對付款、產權與抵押設定。</p><p><strong>完成後得到：</strong>最終交割表、完成登記的權利文件，以及不會臨時斷掉的資金流程。</p></div></details>
+          </article>
+          <article>
+            <h3>交屋後</h3><p>點交鑰匙、水電瓦斯、管理費與設備；辦自住稅率、保險與戶籍。把權狀、契約、匯款紀錄永久保存。</p>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>簽約與過戶只代表取得產權；設備瑕疵、帳單、稅率與日後共同負擔仍要有人接手。</p><p><strong>怎麼做：</strong>用照片完成點交紀錄，抄表、收齊鑰匙與遙控器；辦理水電瓦斯、管理與保險，並分別檢查房屋稅與地價稅自住資格。</p><p><strong>完成後得到：</strong>可追究的交屋紀錄、正確帳務與稅務狀態，以及兩人持續維護房屋的共同帳本。</p></div></details>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="after-buy" class="after-buy">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">05 · AFTER YOU BUY</p><h2>光買房還不夠：交屋後要做什麼？</h2></div>
+          <p>過戶完成後，還有點交、過戶帳務、自住稅率、保險與長期維護。把它們排進行程與月預算，才是真正住得穩。</p>
+        </div>
+
+        <div class="after-tasks">
+          <article class="after-task" data-icon="🔑"><span class="when">交屋當天～7 天</span><h3>完成「有證據」的點交</h3><ul><li>重新驗屋，瑕疵逐項拍照、錄影並簽名</li><li>抄錄水、電、瓦斯表度數與分攤日</li><li>清點鑰匙、門禁卡、遙控器、設備與保固</li><li>確認管理費、公共基金及前屋主欠費已結清</li></ul></article>
+          <article class="after-task" data-icon="📮"><span class="when">入住前 30 天</span><h3>把帳單與保障接過來</h3><ul><li>水、電、瓦斯及管委會資料辦理過戶</li><li>設定房貸扣款、帳單地址與共同記帳方式</li><li>確認銀行要求的住宅火災／地震基本保險</li><li>保留至少 6 個月生活費，不投入裝潢</li></ul></article>
+          <article class="after-task" data-icon="🗓️"><span class="when">兩種自住優惠分開辦</span><h3>設籍後主動確認稅率</h3><ul><li>房屋稅自住原則上在 3/22 前申報</li><li>地價稅自用住宅用地在 9/22 前申請</li><li>兩者條件與申請不同，不會自動互通</li><li>2031 仍須向房屋所在地稅捐機關重查</li></ul></article>
+          <article class="after-task" data-icon="🧰"><span class="when">每月／每年持續</span><h3>養房比買房更長久</h3><ul><li>每月：房貸、管理費、車位與修繕準備金</li><li>每年 5 月：留意房屋稅繳納通知</li><li>每年 11 月：留意地價稅繳納通知</li><li>每年檢查保險、設備保養與共同出資帳</li></ul></article>
+        </div>
+
+        <div class="holding-tool" aria-label="買房後每月持有成本試算器">
+          <div class="holding-controls">
+            <h3>買房後，每月還要留多少？</h3>
+            <p>房價會沿用上方的設定；房貸以貸 8 成、年利率 3%、40 年本息平均攤還做壓力測試。</p>
+            <div class="control">
+              <label for="postManagement"><span>管理費＋車位／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="postManagementManual" type="number" min="0" max="30000" step="100" value="3000" inputmode="numeric" aria-label="手動輸入每月管理費與車位費"></span></label>
+              <input id="postManagement" type="range" min="0" max="30000" step="100" value="3000">
+            </div>
+            <div class="control">
+              <label for="postAnnual"><span>稅金＋保險／年</span><span class="manual-entry"><span class="suffix">NT$</span><input id="postAnnualManual" type="number" min="0" max="200000" step="1000" value="24000" inputmode="numeric" aria-label="手動輸入每年稅金與保險"></span></label>
+              <input id="postAnnual" type="range" min="0" max="200000" step="1000" value="24000">
+            </div>
+            <div class="control">
+              <label for="repairRate"><span>年度修繕準備金</span><span class="manual-entry"><input id="repairRateManual" type="number" min="0" max="3" step="0.1" value="0.5" inputmode="decimal" aria-label="手動輸入年度修繕準備金比例"><span class="suffix">% 房價</span></span></label>
+              <input id="repairRate" type="range" min="0" max="3" step="0.1" value="0.5">
+            </div>
+          </div>
+          <div class="holding-results" aria-live="polite">
+            <div class="cost-grid">
+              <div class="cost-card"><span>房貸月付（3% 壓測）</span><strong id="postMortgage">28,639</strong></div>
+              <div class="cost-card"><span>管理費＋車位／月</span><strong id="postManagementOut">3,000</strong></div>
+              <div class="cost-card"><span>稅金＋保險月均</span><strong id="postAnnualMonthly">2,000</strong></div>
+              <div class="cost-card"><span>修繕準備金／月</span><strong id="postRepairMonthly">4,167</strong></div>
+              <div class="cost-card total"><span>每月完整持有成本</span><strong id="postTotalMonthly">37,806</strong></div>
+              <div class="cost-card"><span>每年非房貸持有費</span><strong id="postAnnualTotal">110,000</strong></div>
+            </div>
+            <p class="holding-note">這是現金流預留額，不是稅單預估。房屋稅與地價稅依房屋／土地評定資料與適用稅率計算，不是直接用成交價乘百分比；請拿到標的後向當地稅捐機關查詢。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="check">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">06 · DUE DILIGENCE</p><h2>電梯大樓特別要查什麼？</h2></div>
+          <p>真正容易花大錢的，不只室內裝潢，而是大樓共有部分、法規與未揭露的長期修繕。</p>
+        </div>
+
+        <details open><summary>大樓與管委會</summary><div><ul class="checkgrid"><li>近 2–3 年區權會／管委會會議紀錄</li><li>公共基金餘額與重大欠費戶</li><li>電梯年檢、維修與預計汰換</li><li>外牆、防水、消防與公共管線工程</li><li>管理費、車位清潔費與臨時分攤</li><li>垃圾、包裹、門禁與夜間管理</li></ul></div></details>
+        <details><summary>房屋本體</summary><div><ul class="checkgrid"><li>漏水、壁癌、窗框與浴室防水</li><li>水壓、熱水、電力容量與管線更新</li><li>採光、日照、西曬、噪音與異味</li><li>樓上／隔壁生活聲、機房與水塔噪音</li><li>室內現況是否與平面圖一致</li><li>氯離子、耐震、海砂／輻射屋資料</li></ul></div></details>
+        <details><summary>產權與土地</summary><div><ul class="checkgrid"><li>建物用途須含住、住宅、套房或公寓</li><li>土地／建物持分、抵押、查封、預告登記</li><li>車位是獨立權狀、共同持分或使用權</li><li>頂樓、陽台、夾層是否違建</li><li>道路用地、都市計畫與嫌惡設施</li><li>淹水、土壤液化、山坡地與斷層資訊</li></ul></div></details>
+        <details><summary>未婚共同購屋</summary><div><ul class="checkgrid"><li>頭期、房貸、稅費、裝修各自比例</li><li>持分是否對應實際出資</li><li>一方失業、分手、離台時如何處理</li><li>出售、出租、增貸是否需雙方同意</li><li>一方過世時：遺囑、保險與繼承安排</li><li>匯款用途寫清楚，避免被認定贈與</li></ul><p class="small">未婚伴侶不是法定配偶，沒有配偶繼承順位與夫妻財產制保護。出資與登記不一致可能衍生贈與稅疑義；2026 年每位贈與人全年免稅額為 244 萬，但 2031 金額仍要重新查。</p></div></details>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap decision">
+        <div><p class="eyebrow" style="color:#f0b94d">BOTTOM LINE</p><h2>現在最務實的結論</h2><p>不要先為了青安犧牲產權公平，也不要先把兩份收入都當成銀行一定會認列。</p></div>
+        <div><ol>
+          <li><strong>把 1,000 萬當主目標、1,200 萬當條件式上限。</strong>在沒有既有存款與加薪資料時，完整購屋現金 280 萬較接近；336 萬需提高儲蓄或延後。</li>
+          <li><strong>2028 前先問銀行 80/20 與 50/50 兩案。</strong>重點是銀行是否接受馬來西亞籍者的收入與共同負擔，不只是利率。</li>
+          <li><strong>2031 不預設青安。</strong>若 2029–2030 公告續辦，再比較「台灣主借＋部分青安」和「共同一般房貸」的總成本與權利。</li>
+          <li><strong>簽任何斡旋前完成共有人協議。</strong>持分、出資、分手／過世／離台、買回與出售機制，都應由地政士或律師落成文件。</li>
+        </ol></div>
+      </div>
+    </section>
+
+    <section class="sources">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="eyebrow">OFFICIAL SOURCES</p><h2>官方資料來源</h2></div>
+          <p>查核日期：2026/10/12。以下連結用於政策與數字查核；2031 前請重新確認。</p>
+        </div>
+        <ul class="source-list">
+          <li><a href="https://www.nta.gov.tw/singlehtml/109?fromsection=inarticle&sectioninfo=5097763" target="_blank" rel="noreferrer">財政部國庫署｜青安 3.0 問答集</a></li>
+          <li><a href="https://www.nta.gov.tw/singlehtml/108?fromsection=inarticle" target="_blank" rel="noreferrer">財政部國庫署｜青安 3.0 貸款原則</a></li>
+          <li><a href="https://www.zhonghe.land.ntpc.gov.tw/cp.aspx?n=1072" target="_blank" rel="noreferrer">新北市地政｜馬來西亞為完全平等互惠國</a></li>
+          <li><a href="https://www.moi.gov.tw/english/News_Content.aspx?n=8353&s=124868&sms=11280" target="_blank" rel="noreferrer">內政部｜外國人取得土地的互惠原則</a></li>
+          <li><a href="https://www.bli.gov.tw/0102606.htm" target="_blank" rel="noreferrer">勞保局｜2026 保險費分擔金額表</a></li>
+          <li><a href="https://www.nhi.gov.tw/ch/dl-93514-82e2005553f04bcb81bb02e75ceb1922-1.pdf" target="_blank" rel="noreferrer">健保署｜2026 受僱者健保負擔表</a></li>
+          <li><a href="https://rate.bot.com.tw/xrt?Lang=zh-TW" target="_blank" rel="noreferrer">臺灣銀行｜牌告匯率</a></li>
+          <li><a href="https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=e4170c62974c4c7c9fa78c24c9fcb130" target="_blank" rel="noreferrer">財政部｜2026 贈與稅免稅額</a></li>
+          <li><a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/local/deed-tax/YQZLEmg" target="_blank" rel="noreferrer">財政部稅務入口網｜契稅</a></li>
+          <li><a href="https://mlvr.land.moi.gov.tw/jsp/index.jsp" target="_blank" rel="noreferrer">內政部｜不動產實價查詢</a></li>
+          <li><a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-manual/local/house-tax/zx7AP85" target="_blank" rel="noreferrer">財政部稅務入口網｜房屋稅自住條件與申請期限</a></li>
+          <li><a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-saving-secret/3A3RBO0" target="_blank" rel="noreferrer">財政部稅務入口網｜地價稅自用住宅用地 2‰</a></li>
+          <li><a href="https://www.etax.nat.gov.tw/etwmain/tax-info/understanding/tax-q-and-a/local/land-value-tax/PwBwobM?projectId=Q1VTMDM0NA%3D%3D" target="_blank" rel="noreferrer">財政部稅務入口網｜房屋稅與地價稅繳納月份</a></li>
+          <li><a href="https://www.taipower.com.tw/media/yhonxclo/2021090718254760151.pdf?mediaDL=true" target="_blank" rel="noreferrer">台灣電力公司｜變更用電（過戶）申請須知</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">本頁是個人規劃工具，不是銀行核貸承諾、法律或稅務意見。實際購屋前請由承辦銀行、地政士／律師與稅務機關依當時規定確認。</div></footer>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const values = {
+      malaysiaNetRatio: 48070 / 50000,
+      taiwanNetRatio: 38375 / 40000
+    };
+    const money = (n) => new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 0 }).format(Math.round(n));
+    const wan = (n) => `${Math.round(n / 10000)} 萬`;
+
+    function monthlyPayment(principal, annualRate, years) {
+      if (principal <= 0) return 0;
+      const rate = annualRate / 12;
+      const periods = years * 12;
+      return principal * rate * Math.pow(1 + rate, periods) / (Math.pow(1 + rate, periods) - 1);
+    }
+
+    function updateHoldingCosts(price) {
+      const management = Number($('postManagement').value);
+      const annualTaxInsurance = Number($('postAnnual').value);
+      const repairRate = Number($('repairRate').value) / 100;
+      const mortgage = monthlyPayment(price * .8, .03, 40);
+      const annualMonthly = annualTaxInsurance / 12;
+      const repairMonthly = price * repairRate / 12;
+      const totalMonthly = mortgage + management + annualMonthly + repairMonthly;
+      const annualNonMortgage = management * 12 + annualTaxInsurance + price * repairRate;
+
+      $('postMortgage').textContent = money(mortgage);
+      $('postManagementOut').textContent = money(management);
+      $('postAnnualMonthly').textContent = money(annualMonthly);
+      $('postRepairMonthly').textContent = money(repairMonthly);
+      $('postTotalMonthly').textContent = money(totalMonthly);
+      $('postAnnualTotal').textContent = money(annualNonMortgage);
+    }
+
+    function updateCalculator() {
+      const price = Number($('price').value);
+      const months = Number($('months').value);
+      const malSalary = Number($('malSalary').value);
+      const twSalary = Number($('twSalary').value);
+      const malNet = Math.round(malSalary * values.malaysiaNetRatio);
+      const twNet = Math.round(twSalary * values.taiwanNetRatio);
+      const malRent = Number($('malRent').value);
+      const twRent = Number($('twRent').value);
+      const usdMonthly = Number($('usdMonthly').value);
+      const malLiving = Number($('malLiving').value);
+      const twLiving = Number($('twLiving').value);
+      const malExisting = Number($('malExisting').value);
+      const twExisting = Number($('twExisting').value);
+      const malMonthly = Math.max(0, malNet - malRent - malLiving);
+      const twMonthly = Math.max(0, twNet - twRent - twLiving);
+      const malFutureSaved = malMonthly * months;
+      const twFutureSaved = twMonthly * months;
+      const malSaved = malExisting + malFutureSaved;
+      const twSaved = twExisting + twFutureSaved;
+      const saved = malSaved + twSaved;
+      const combinedNet = malNet + twNet;
+      const essentialCost = malRent + twRent + malLiving + twLiving;
+      const monthlySaving = malMonthly + twMonthly;
+      const savingRate = combinedNet > 0 ? monthlySaving / combinedNet * 100 : 0;
+      const down = price * .20;
+      const buffer = price * .08;
+      const target = down + buffer;
+      const gap = target - saved;
+      const ratio = Math.max(0, saved / target * 100);
+      const existingTotal = malExisting + twExisting;
+      const monthsToTarget = monthlySaving > 0
+        ? Math.ceil(Math.max(0, target - existingTotal) / monthlySaving)
+        : (existingTotal >= target ? 0 : Infinity);
+      const usdAsset = Math.min(malFutureSaved, usdMonthly * months);
+      const flexibleMalSaving = Math.max(0, malMonthly - usdMonthly);
+
+      $('malNet').textContent = money(malNet);
+      $('twNet').textContent = money(twNet);
+      $('heroCombinedNet').textContent = money(combinedNet);
+      $('combinedNet').textContent = money(combinedNet);
+      $('essentialCost').textContent = money(essentialCost);
+      $('monthlySaving').textContent = money(monthlySaving);
+      $('savingRate').textContent = `${Math.round(savingRate)}%`;
+      $('monthsToTarget').textContent = Number.isFinite(monthsToTarget) ? `${monthsToTarget} 個月` : '目前無法達成';
+      $('malBudgetSave').textContent = money(malMonthly);
+      $('twBudgetSave').textContent = money(twMonthly);
+      $('saved').textContent = wan(saved);
+      $('malSaved').textContent = wan(malSaved);
+      $('twSaved').textContent = wan(twSaved);
+      $('malMonthly').textContent = usdMonthly <= malMonthly
+        ? `現有 ${wan(malExisting)}｜每月 ${money(malMonthly)}（定存 ${money(usdMonthly)}＋自由儲蓄 ${money(flexibleMalSaving)}）`
+        : `現有 ${wan(malExisting)}｜每月 ${money(malMonthly)}，定存設定超過可存金額`;
+      $('twMonthly').textContent = `現有 ${wan(twExisting)}｜每月約 ${money(twMonthly)}`;
+      $('target').textContent = wan(target);
+      $('down').textContent = wan(down);
+      $('buffer').textContent = wan(buffer);
+      $('usdAsset').textContent = wan(usdAsset);
+      $('ratio').textContent = `${Math.round(ratio)}%`;
+      $('progressBar').style.width = `${Math.min(100, ratio)}%`;
+      updateHoldingCosts(price);
+
+      if (gap <= 0) {
+        $('gapLabel').textContent = `達標後約剩 ${wan(Math.abs(gap))}`;
+        $('moneyAdvice').textContent = '目前設定可達完整購屋現金目標。達標後仍請把 6 個月生活費獨立保留，不要全部投入交屋。';
+      } else if (saved >= down) {
+        const perMonth = gap / months;
+        $('gapLabel').textContent = `距離完整目標還差 ${wan(gap)}`;
+        $('moneyAdvice').textContent = `頭期款本身可達成，但交易、整備與安全預備金仍不足。兩人合計每月再多存約 ${money(perMonth)} 元，或下修總價／延後購屋即可補足。`;
+      } else {
+        const perMonth = (down - saved) / months;
+        $('gapLabel').textContent = `連 20% 頭期仍差 ${wan(down - saved)}`;
+        $('moneyAdvice').textContent = `目前設定尚未達 20% 頭期。至少需再增加每月約 ${money(perMonth)} 元儲蓄，或下修總價／延後購屋。`;
+      }
+    }
+
+    const pairs = [
+      { range: 'price', manual: 'priceManual', toManual: (v) => v / 10000, toRange: (v) => v * 10000 },
+      { range: 'months', manual: 'monthsManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'malSalary', manual: 'malSalaryManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'twSalary', manual: 'twSalaryManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'malRent', manual: 'malRentManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'twRent', manual: 'twRentManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'usdMonthly', manual: 'usdMonthlyManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'malLiving', manual: 'malLivingManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'twLiving', manual: 'twLivingManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'malExisting', manual: 'malExistingManual', toManual: (v) => v / 10000, toRange: (v) => v * 10000 },
+      { range: 'twExisting', manual: 'twExistingManual', toManual: (v) => v / 10000, toRange: (v) => v * 10000 },
+      { range: 'postManagement', manual: 'postManagementManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'postAnnual', manual: 'postAnnualManual', toManual: (v) => v, toRange: (v) => v },
+      { range: 'repairRate', manual: 'repairRateManual', toManual: (v) => v, toRange: (v) => v }
+    ];
+
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    pairs.forEach(({ range, manual, toManual, toRange }) => {
+      const rangeEl = $(range);
+      const manualEl = $(manual);
+
+      rangeEl.addEventListener('input', () => {
+        manualEl.value = toManual(Number(rangeEl.value));
+        updateCalculator();
+      });
+
+      manualEl.addEventListener('input', () => {
+        if (manualEl.value === '') return;
+        const next = clamp(toRange(Number(manualEl.value)), Number(rangeEl.min), Number(rangeEl.max));
+        rangeEl.value = next;
+        updateCalculator();
+      });
+
+      manualEl.addEventListener('change', () => {
+        const next = clamp(toRange(Number(manualEl.value) || Number(rangeEl.min)), Number(rangeEl.min), Number(rangeEl.max));
+        rangeEl.value = next;
+        manualEl.value = toManual(next);
+        updateCalculator();
+      });
+    });
+
+    updateCalculator();
+  </script>
+</body>
+</html>
