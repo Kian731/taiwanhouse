@@ -315,9 +315,11 @@
     .pill { display: inline-flex; padding: 7px 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; font-size: 13px; font-weight: 850; }
 
     .table-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
-    table { width: 100%; border-collapse: collapse; min-width: 1220px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1100px; }
     th, td { padding: 18px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { color: var(--muted); background: #fbecdf; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+    th { color: var(--muted); background: #fbecdf; font-size: 15px; font-weight: 800; line-height: 1.35; text-align: center; letter-spacing: .03em; }
+    td { font-size: 14px; line-height: 1.7; }
+    th:nth-child(2), td:nth-child(2) { white-space: nowrap; }
     tbody tr:last-child td { border-bottom: 0; }
     tbody tr.recommended { background: #fff0e3; }
     tbody tr.not-applicable { color: #7b746f; background: #ebe7e3; }
@@ -496,19 +498,27 @@
       .wrap { width: min(100% - 24px, 1180px); }
       .hero { padding-top: 44px; }
       section { padding: 58px 0; }
-      .profiles, .payment-cards, .result-grid, .metrics-grid, .source-list, .checkgrid, .plan-controls { grid-template-columns: 1fr; }
+      .profiles, .payment-cards, .source-list, .checkgrid, .plan-controls { grid-template-columns: 1fr; }
       .control label { align-items: flex-start; }
       .manual-entry input[type="number"] { width: 82px; }
       .doodle { display: none; }
       .calculator, .profile, .payment, .policy-banner, .decision { border-radius: 18px; }
       .controls, .result, .policy-banner, .decision { padding: 22px; }
-      .timeline::before { left: 64px; }
-      .time-row { grid-template-columns: 49px 28px 1fr; gap: 9px; }
-      .time-year { font-size: 15px; }
+      .result-grid, .metrics-grid, .cost-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .result-card, .metric, .cost-card { padding: 14px 10px; text-align: center; }
+      .result-card.hero-result { grid-column: 1 / -1; }
+      .result-card span, .cost-card span { font-size: 12px; }
+      .result-card strong { font-size: clamp(23px, 8vw, 30px); }
+      .metric-label { margin-inline: auto; }
+      .cost-card.total { grid-column: auto; }
+      .timeline::before { left: 9px; top: 20px; bottom: 20px; }
+      .time-row { grid-template-columns: 20px minmax(0, 1fr); grid-template-areas: "dot year" ". card"; column-gap: 10px; row-gap: 8px; padding: 14px 0; }
+      .time-year { grid-area: year; align-self: center; font-size: 15px; text-align: left; }
+      .dot { grid-area: dot; margin: 2px auto 0; }
+      .time-card { grid-area: card; }
       .time-card { padding: 17px; }
       .journey article { padding-left: 64px; }
-      .after-tasks, .cost-grid { grid-template-columns: 1fr; }
-      .cost-card.total { grid-column: auto; }
+      .after-tasks { grid-template-columns: 1fr; }
       .after-task { min-height: 0; }
     }
   </style>
@@ -684,22 +694,22 @@
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>安排</th><th>登記持分</th><th>你們實際金額分擔</th><th>現行青安可用上限*</th><th>銀行看收入</th><th>優點</th><th>主要風險／判斷</th></tr></thead>
+            <thead><tr><th>安排</th><th>登記持分</th><th>現行青安可用上限*</th><th>銀行看收入</th><th>優點</th><th>主要風險／判斷</th></tr></thead>
             <tbody>
               <tr>
-                <td><strong>台灣籍單獨持有、台灣方主借</strong></td><td>100%／0%</td><td><strong>50%／50%</strong><br><span class="small muted">不跟持分變動</span></td><td class="good">最高 1,000 萬</td><td>主要只看台灣方收入</td><td>青安額度較完整、流程較單純</td><td>馬來西亞方沒有登記產權；即使兩人私下各付一半，對銀行的借款責任仍以契約上的借款人為準，須特別確認法律與稅務處理。</td>
+                <td><strong>台灣籍單獨持有、台灣方主借</strong></td><td>100%／0%</td><td class="good">最高 1,000 萬</td><td>主要只看台灣方收入</td><td>青安額度較完整、流程較單純</td><td>馬來西亞方沒有登記產權；即使兩人私下各付一半，對銀行的借款責任仍以契約上的借款人為準，須特別確認法律與稅務處理。</td>
               </tr>
               <tr class="recommended">
-                <td><strong>台灣主借、共同持有</strong><br><span class="tag">折衷案先詢價</span></td><td>例如 80%／20%</td><td><strong>50%／50%</strong><br><span class="small muted">不跟持分變動</span></td><td class="good">約 800 萬</td><td>能否納入外籍伴侶收入由銀行審核</td><td>保留多數青安額度，也讓外籍方有登記權利</td><td>所有共有人通常都要配合抵押；持分與各半出資不同，應以書面處理權利、返還與退出機制。</td>
+                <td><strong>台灣主借、共同持有</strong><br><span class="tag">折衷案先詢價</span></td><td>例如 80%／20%</td><td class="good">約 800 萬</td><td>能否納入外籍伴侶收入由銀行審核</td><td>保留多數青安額度，也讓外籍方有登記權利</td><td>所有共有人通常都要配合抵押；持分與各半出資不同，應以書面處理權利、返還與退出機制。</td>
               </tr>
               <tr>
-                <td><strong>共同持有、共同承擔一般房貸</strong></td><td>50%／50%</td><td><strong>50%／50%</strong><br><span class="small muted">本案剛好相同</span></td><td>若只有台灣方合格，約 500 萬；其餘一般貸款</td><td>較有機會同時呈現兩人收入，仍看銀行</td><td>登記權利與各半出資最直覺</td><td>可用青安額度可能較少；外籍文件與銀行內規也可能使審核較久。</td>
+                <td><strong>共同持有、共同承擔一般房貸</strong></td><td>50%／50%</td><td>若只有台灣方合格，約 500 萬；其餘一般貸款</td><td>較有機會同時呈現兩人收入，仍看銀行</td><td>登記權利與各半出資最直覺</td><td>可用青安額度可能較少；外籍文件與銀行內規也可能使審核較久。</td>
               </tr>
               <tr class="not-applicable">
-                <td><strong>各自向不同銀行借</strong><br><span class="tag inactive">不適用目前規劃</span></td><td>任意</td><td>仍規劃 50%／50%</td><td>外籍方 0</td><td>分開看</td><td>表面上各自負責</td><td><span class="warn">通常不實際。</span>同一房地涉及抵押順位，實務多由同一家銀行做主借／共同借款，而非拆成兩筆第一順位房貸。</td>
+                <td><strong>各自向不同銀行借</strong><br><span class="tag inactive">不適用目前規劃</span></td><td>任意</td><td>外籍方 0</td><td>分開看</td><td>表面上各自負責</td><td><span class="warn">通常不實際。</span>同一房地涉及抵押順位，實務多由同一家銀行做主借／共同借款，而非拆成兩筆第一順位房貸。</td>
               </tr>
               <tr class="not-applicable">
-                <td><strong>馬來西亞籍單獨持有、一般房貸</strong><br><span class="tag inactive">不符合目前規劃</span></td><td>0%／100%</td><td>仍規劃 50%／50%</td><td>0</td><td>看 48,070 與居留、工作、信用資料</td><td>持分集中於外籍方</td><td>不能用青安；即使金額各半，台灣方沒有登記產權，核貸成數、期限與文件亦由銀行個案審查。</td>
+                <td><strong>馬來西亞籍單獨持有、一般房貸</strong><br><span class="tag inactive">不符合目前規劃</span></td><td>0%／100%</td><td>0</td><td>看 48,070 與居留、工作、信用資料</td><td>持分集中於外籍方</td><td>不能用青安；即使金額各半，台灣方沒有登記產權，核貸成數、期限與文件亦由銀行個案審查。</td>
               </tr>
             </tbody>
           </table>
