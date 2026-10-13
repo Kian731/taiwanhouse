@@ -261,11 +261,11 @@
       line-height: 1;
     }
     .tip-pop {
-      position: absolute;
-      left: 0;
-      bottom: calc(100% + 9px);
-      z-index: 10;
-      width: min(270px, calc(100vw - 54px));
+      position: fixed;
+      left: 12px;
+      top: 12px;
+      z-index: 1000;
+      width: min(300px, calc(100vw - 24px));
       padding: 11px 12px;
       color: #fffaf2;
       background: #5d4035;
@@ -280,10 +280,9 @@
       transform: translateY(4px);
       transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
     }
-    .tip-pop::after { content: ""; position: absolute; left: 42px; top: 100%; border: 6px solid transparent; border-top-color: #5d4035; }
-    .metric-label:hover .tip-pop,
-    .info-tip:focus-visible + .tip-pop,
-    .metric-label.is-open .tip-pop { opacity: 1; visibility: visible; transform: translateY(0); }
+    .tip-pop::after { content: ""; position: absolute; left: var(--tip-arrow-left, 42px); top: 100%; border: 6px solid transparent; border-top-color: #5d4035; }
+    .tip-pop.is-below::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #5d4035; }
+    .metric-label.is-open .tip-pop { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
     .control-hint strong { color: var(--teal-dark); font-weight: 700; }
     .progress-box { padding: 20px; background: var(--white); border: 1px solid #ddc4b2; border-radius: 17px; }
     .progress-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; font-weight: 850; }
@@ -484,7 +483,9 @@
     .deadline, .payment-price, .time-year, .journey article::before { font-weight: 800; }
 
     @media (max-width: 900px) {
-      .navlinks { display: none; }
+      .navlinks { display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: none; white-space: nowrap; }
+      .navlinks::-webkit-scrollbar { display: none; }
+      .navlinks a { flex: 0 0 auto; }
       .hero-grid, .section-head, .policy-banner, .decision { grid-template-columns: 1fr; }
       .house-card { min-height: 390px; padding: 76px 30px 28px; border-radius: 110px 110px 26px 26px; }
       .verdicts { grid-template-columns: 1fr; }
@@ -496,6 +497,12 @@
 
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1180px); }
+      section[id] { scroll-margin-top: 112px; }
+      .nav { min-height: auto; flex-direction: column; align-items: stretch; gap: 8px; padding: 9px 0 8px; }
+      .brand { align-self: flex-start; font-size: 14px; }
+      .brand-mark { width: 30px; height: 30px; }
+      .navlinks { justify-content: space-between; gap: 8px; }
+      .navlinks a { font-size: 12px; }
       .hero { padding-top: 44px; }
       section { padding: 58px 0; }
       .profiles, .payment-cards, .source-list, .checkgrid, .plan-controls { grid-template-columns: 1fr; }
@@ -1085,26 +1092,90 @@
       });
     });
 
+    const metricLabels = [...document.querySelectorAll('.metric-label')];
+    const supportsMetricHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const positionMetricTip = (label) => {
+      const button = label.querySelector('.info-tip');
+      const tip = label.querySelector('.tip-pop');
+      if (!button || !tip || !label.classList.contains('is-open')) return;
+
+      const margin = 12;
+      const gap = 10;
+      const buttonRect = button.getBoundingClientRect();
+      const tipRect = tip.getBoundingClientRect();
+      const buttonCenter = buttonRect.left + buttonRect.width / 2;
+      let left = buttonCenter - tipRect.width / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - tipRect.width - margin));
+
+      let top = buttonRect.top - tipRect.height - gap;
+      let isBelow = false;
+      if (top < margin) {
+        top = buttonRect.bottom + gap;
+        isBelow = true;
+      }
+      top = Math.max(margin, Math.min(top, window.innerHeight - tipRect.height - margin));
+
+      const arrowLeft = Math.max(12, Math.min(buttonCenter - left - 6, tipRect.width - 24));
+      tip.style.left = `${Math.round(left)}px`;
+      tip.style.top = `${Math.round(top)}px`;
+      tip.style.setProperty('--tip-arrow-left', `${Math.round(arrowLeft)}px`);
+      tip.classList.toggle('is-below', isBelow);
+    };
+
     const closeMetricTips = (except = null) => {
-      document.querySelectorAll('.metric-label.is-open').forEach((label) => {
+      metricLabels.forEach((label) => {
         if (label === except) return;
-        label.classList.remove('is-open');
+        label.classList.remove('is-open', 'is-pinned');
         label.querySelector('.info-tip')?.setAttribute('aria-expanded', 'false');
       });
     };
 
-    document.querySelectorAll('.info-tip').forEach((button) => {
+    const openMetricTip = (label, pinned = false) => {
+      closeMetricTips(label);
+      label.classList.add('is-open');
+      label.classList.toggle('is-pinned', pinned);
+      label.querySelector('.info-tip')?.setAttribute('aria-expanded', 'true');
+      positionMetricTip(label);
+    };
+
+    metricLabels.forEach((label) => {
+      const button = label.querySelector('.info-tip');
+      const tip = label.querySelector('.tip-pop');
+      if (!button || !tip) return;
+
       button.addEventListener('click', (event) => {
         event.stopPropagation();
-        const label = button.closest('.metric-label');
-        const shouldOpen = !label.classList.contains('is-open');
-        closeMetricTips(label);
-        label.classList.toggle('is-open', shouldOpen);
-        button.setAttribute('aria-expanded', String(shouldOpen));
+        if (label.classList.contains('is-open') && label.classList.contains('is-pinned')) {
+          closeMetricTips();
+        } else {
+          openMetricTip(label, true);
+        }
       });
+
+      button.addEventListener('focus', () => openMetricTip(label, label.classList.contains('is-pinned')));
+      button.addEventListener('blur', () => {
+        if (!label.classList.contains('is-pinned')) closeMetricTips();
+      });
+
+      if (supportsMetricHover) {
+        label.addEventListener('mouseenter', () => openMetricTip(label));
+        label.addEventListener('mouseleave', () => {
+          if (!label.classList.contains('is-pinned')) closeMetricTips();
+        });
+      }
     });
 
-    document.addEventListener('click', () => closeMetricTips());
+    const repositionOpenMetricTip = () => {
+      const openLabel = document.querySelector('.metric-label.is-open');
+      if (openLabel) positionMetricTip(openLabel);
+    };
+
+    window.addEventListener('resize', repositionOpenMetricTip);
+    window.addEventListener('scroll', repositionOpenMetricTip, { passive: true, capture: true });
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.metric-label')) closeMetricTips();
+    });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeMetricTips();
     });
