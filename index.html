@@ -237,10 +237,54 @@
     .result-card.person-malaysia { background: #fff0c9; border-color: #e9bf69; }
     .result-card.person-taiwan { background: #fbe3d5; border-color: #dda286; }
     .result-card small { display: block; min-height: 1.5em; color: var(--muted); font-size: 11px; }
+    .result-card small + small { margin-top: 5px; }
+    .result-card .share-status { color: var(--teal-dark); font-weight: 700; }
     .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 20px; }
-    .metric { padding: 13px 14px; border: 1px dashed #c99e86; border-radius: 14px; background: rgba(255,250,242,.78); }
-    .metric span { display: block; color: var(--muted); font-size: 11px; font-weight: 800; }
+    .metric { position: relative; padding: 13px 14px; border: 1px dashed #c99e86; border-radius: 14px; background: rgba(255,250,242,.78); }
+    .metric:hover, .metric:focus-within { z-index: 5; border-color: var(--teal); }
+    .metric-label { position: relative; display: flex; align-items: center; gap: 6px; width: fit-content; }
+    .metric-label > span:first-child { display: block; color: var(--muted); font-size: 11px; font-weight: 800; }
     .metric strong { display: block; margin-top: 2px; font-size: 18px; }
+    .info-tip {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      color: white;
+      background: var(--teal);
+      border: 0;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .tip-pop {
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 9px);
+      z-index: 10;
+      width: min(270px, calc(100vw - 54px));
+      padding: 11px 12px;
+      color: #fffaf2;
+      background: #5d4035;
+      border-radius: 11px;
+      box-shadow: 0 10px 28px rgba(67,47,39,.22);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.55;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition: opacity .16s ease, transform .16s ease, visibility .16s ease;
+    }
+    .tip-pop::after { content: ""; position: absolute; left: 42px; top: 100%; border: 6px solid transparent; border-top-color: #5d4035; }
+    .metric-label:hover .tip-pop,
+    .info-tip:focus-visible + .tip-pop,
+    .metric-label.is-open .tip-pop { opacity: 1; visibility: visible; transform: translateY(0); }
+    .control-hint strong { color: var(--teal-dark); font-weight: 700; }
     .progress-box { padding: 20px; background: var(--white); border: 1px solid #ddc4b2; border-radius: 17px; }
     .progress-label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; font-weight: 850; }
     .progress { height: 13px; background: #ead3c4; border-radius: 999px; overflow: hidden; }
@@ -271,12 +315,17 @@
     .pill { display: inline-flex; padding: 7px 11px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; font-size: 13px; font-weight: 850; }
 
     .table-wrap { margin-top: 24px; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
-    table { width: 100%; border-collapse: collapse; min-width: 860px; }
+    table { width: 100%; border-collapse: collapse; min-width: 1220px; }
     th, td { padding: 18px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
     th { color: var(--muted); background: #fbecdf; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
     tbody tr:last-child td { border-bottom: 0; }
     tbody tr.recommended { background: #fff0e3; }
+    tbody tr.not-applicable { color: #7b746f; background: #ebe7e3; }
+    tbody tr.not-applicable td { border-bottom-color: #d8d1cb; }
+    tbody tr.not-applicable strong { color: #625c58; }
+    tbody tr.not-applicable .warn { color: #7b746f; }
     .tag { display: inline-flex; padding: 4px 8px; border-radius: 7px; font-size: 11px; font-weight: 950; color: white; background: var(--orange); }
+    .tag.inactive { color: #fff; background: #8b827c; }
     .good { color: var(--teal-dark); font-weight: 900; }
     .warn { color: var(--danger); font-weight: 900; }
 
@@ -393,8 +442,9 @@
     .cost-card { padding: 17px; background: var(--white); border: 1px solid #dcbda7; border-radius: 15px; }
     .cost-card span { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
     .cost-card strong { display: block; margin-top: 4px; font-size: 24px; }
+    .cost-card small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
     .cost-card.total { grid-column: 1 / -1; color: white; background: #93432f; border-color: #93432f; }
-    .cost-card.total span { color: #ffe8da; }
+    .cost-card.total span, .cost-card.total small { color: #ffe8da; }
     .holding-note { margin: 16px 0 0; padding: 14px 16px; color: var(--muted); background: rgba(255,250,242,.82); border-left: 4px solid var(--yellow); border-radius: 7px 13px 13px 7px; font-size: 13px; }
 
     details { background: var(--white); border: 1px solid var(--line); border-radius: 16px; }
@@ -548,7 +598,7 @@
                 <div class="control">
                   <label for="usdMonthly"><span>美元定存月提撥</span><span class="manual-entry"><span class="suffix">NT$</span><input id="usdMonthlyManual" type="number" min="0" max="30000" step="100" value="8512" inputmode="numeric" aria-label="手動輸入美元定存每月提撥金額"></span></label>
                   <input id="usdMonthly" type="range" min="0" max="30000" step="1" value="8512">
-                  <p class="control-hint">3,202 美元／年 ÷ 12，按 31.9 換算約 8,512 元；此項是儲蓄分配，不重複扣除。</p>
+                  <p class="control-hint">3,202 美元／年 ÷ 12，按 31.9 換算約 8,512 元；此項是個人儲蓄分配，不重複扣除。<strong id="usdCumulativeHint">按目前設定，累計 51 個月約 43 萬。</strong></p>
                 </div>
                 <div class="control">
                   <label for="malLiving"><span>其他生活費／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="malLivingManual" type="number" min="0" max="100000" step="500" value="13000" inputmode="numeric" aria-label="手動輸入馬來西亞籍每月其他生活費"></span></label>
@@ -588,20 +638,20 @@
           </div>
           <div class="result" aria-live="polite">
             <div class="result-grid">
-              <div class="result-card hero-result"><span>兩人預估累積資產</span><strong id="saved">252 萬</strong><small>已包含目前可用存款</small></div>
-              <div class="result-card person-malaysia"><span>馬來西亞籍累積資產</span><strong id="malSaved">118 萬</strong><small id="malMonthly">每月約 23,070</small></div>
-              <div class="result-card person-taiwan"><span>台灣籍累積資產</span><strong id="twSaved">135 萬</strong><small id="twMonthly">每月約 26,375</small></div>
-              <div class="result-card"><span>建議購屋現金目標 28%</span><strong id="target">280 萬</strong></div>
-              <div class="result-card"><span>其中：20% 頭期</span><strong id="down">200 萬</strong></div>
-              <div class="result-card"><span>交易／整備／風險緩衝 8%</span><strong id="buffer">80 萬</strong></div>
+              <div class="result-card hero-result"><span>兩人預估累積資產</span><strong id="saved">252 萬</strong><small>金額各付 50%，持分另行決定</small></div>
+              <div class="result-card person-malaysia"><span>馬來西亞籍累積資產</span><strong id="malSaved">118 萬</strong><small id="malMonthly">每月約 23,070</small><small class="share-status" id="malShareStatus">50% 個人現金目標 140 萬｜尚差 22 萬</small></div>
+              <div class="result-card person-taiwan"><span>台灣籍累積資產</span><strong id="twSaved">135 萬</strong><small id="twMonthly">每月約 26,375</small><small class="share-status" id="twShareStatus">50% 個人現金目標 140 萬｜尚差 5 萬</small></div>
+              <div class="result-card"><span>建議購屋現金目標 28%</span><strong id="target">280 萬</strong><small id="targetEach">50/50 分攤：每人約 140 萬</small></div>
+              <div class="result-card"><span>其中：20% 頭期</span><strong id="down">200 萬</strong><small id="downEach">50/50 分攤：每人約 100 萬</small></div>
+              <div class="result-card"><span>交易／整備／風險緩衝 8%</span><strong id="buffer">80 萬</strong><small id="bufferEach">50/50 分攤：每人約 40 萬</small></div>
             </div>
             <div class="metrics-grid" aria-label="其他試算數據">
-              <div class="metric"><span>兩人合計實領／月</span><strong id="combinedNet">86,445</strong></div>
-              <div class="metric"><span>必要支出／月</span><strong id="essentialCost">37,000</strong></div>
-              <div class="metric"><span>兩人合計可存／月</span><strong id="monthlySaving">49,445</strong></div>
-              <div class="metric"><span>合計儲蓄率</span><strong id="savingRate">57%</strong></div>
-              <div class="metric"><span>美元定存累積</span><strong id="usdAsset">43 萬</strong></div>
-              <div class="metric"><span>達 28% 目標約需</span><strong id="monthsToTarget">57 個月</strong></div>
+              <div class="metric"><div class="metric-label"><span>兩人合計實領／月</span><button class="info-tip" type="button" aria-label="說明兩人合計實領" aria-expanded="false" aria-describedby="tip-combined-net">?</button><span class="tip-pop" id="tip-combined-net" role="tooltip">兩人的稅前月薪，分別依目前實領估算比例換算後相加。</span></div><strong id="combinedNet">86,445</strong></div>
+              <div class="metric"><div class="metric-label"><span>必要支出／月</span><button class="info-tip" type="button" aria-label="說明必要支出" aria-expanded="false" aria-describedby="tip-essential">?</button><span class="tip-pop" id="tip-essential" role="tooltip">馬來西亞方租金含水電＋台灣方租金＋兩人的其他生活費。美元定存屬於儲蓄，不列入支出。</span></div><strong id="essentialCost">37,000</strong></div>
+              <div class="metric"><div class="metric-label"><span>兩人合計可存／月</span><button class="info-tip" type="button" aria-label="說明兩人合計可存" aria-expanded="false" aria-describedby="tip-monthly-saving">?</button><span class="tip-pop" id="tip-monthly-saving" role="tooltip">兩人合計實領減去必要支出。美元定存已包含在可存金額裡，不會重複加算。</span></div><strong id="monthlySaving">49,445</strong></div>
+              <div class="metric"><div class="metric-label"><span>合計儲蓄率</span><button class="info-tip" type="button" aria-label="說明合計儲蓄率" aria-expanded="false" aria-describedby="tip-saving-rate">?</button><span class="tip-pop" id="tip-saving-rate" role="tooltip">兩人合計可存 ÷ 兩人合計實領。例：49,445 ÷ 86,445，約為 57%。</span></div><strong id="savingRate">57%</strong></div>
+              <div class="metric"><div class="metric-label"><span>20% 頭期達成率</span><button class="info-tip" type="button" aria-label="說明頭期款達成率" aria-expanded="false" aria-describedby="tip-down-rate">?</button><span class="tip-pop" id="tip-down-rate" role="tooltip">兩人預估累積資產 ÷ 房價的 20% 頭期款。可超過 100%，但不代表 28% 完整購屋現金已達標。</span></div><strong id="downPaymentRate">126%</strong></div>
+              <div class="metric"><div class="metric-label"><span>達 28% 目標約需</span><button class="info-tip" type="button" aria-label="說明達成目標所需月份" aria-expanded="false" aria-describedby="tip-target-months">?</button><span class="tip-pop" id="tip-target-months" role="tooltip">（28% 現金目標－目前可用存款）÷ 每月合計可存，向上取整；未計加薪、利息與房價變動。</span></div><strong id="monthsToTarget">57 個月</strong></div>
             </div>
             <div class="progress-box">
               <div class="progress-label"><span id="gapLabel">距離完整目標還差 28 萬</span><span id="ratio">90%</span></div>
@@ -618,38 +668,38 @@
     <section id="loan">
       <div class="wrap">
         <div class="section-head">
-          <div><p class="eyebrow">02 · LOAN & OWNERSHIP</p><h2>貸款和持分要一起決定</h2></div>
-          <p>青安額度不是「拿得到的貸款」，只是優惠上限；銀行仍會審查收入、信用與房屋。你們未婚，誰持有、誰出錢、誰負債，最好在付斡旋金前寫成同一份共識。</p>
+          <div><p class="eyebrow">02 · LOAN & OWNERSHIP</p><h2>持分與金額分擔，分開決定</h2></div>
+          <p>所有購屋現金、房貸月付與買房後費用仍由兩人各負擔 50%；土地／建物持分則是另一個法律決定，可獨立比較 100/0、80/20、50/50。</p>
         </div>
 
         <div class="policy-banner">
           <div><div class="small">現行青安 3.0 受理截止</div><div class="deadline">2029<br>07.31</div></div>
           <div>
-            <h3>2031 的正確規劃：先當作「沒有青安」</h3>
+            <h3>2031 的正確規劃：先算各半負擔，再選持分</h3>
             <p>目前方案一般對象最高 1,000 萬、最高 8 成、最長 40 年、寬限最長 5 年；申貸時未滿 50 歲、個人年所得不逾 200 萬，且本人／配偶／未成年子女無自有住宅。新婚 2 年內最高 1,200 萬，育兒家庭最高 1,500 萬。</p>
-            <div class="pill-row"><span class="pill">限本國人民</span><span class="pill">限貸一次</span><span class="pill">必須自住</span><span class="pill">實際成數由銀行核定</span></div>
-            <p class="small">你們維持未婚時，台灣籍者仍可用「單身」身分申請；馬來西亞籍者不能成為青安借款人。現行約 1.775% 是初期利率，不是 40 年固定：以目前基準推算，優惠會逐年退場至約 1.9%、2.025%、2.15%，第 7 年起回到約 2.275%，基準利率變動時也會跟著變。若 2031 有續案，仍要以當時新規則重新檢查。</p>
+            <div class="pill-row"><span class="pill">金額分擔 50/50</span><span class="pill">持分另行選擇</span><span class="pill">青安限本國人民</span><span class="pill">實際成數由銀行核定</span></div>
+            <p class="small">你們維持未婚時，只有台灣籍者可能符合青安借款資格；可用優惠額度可能隨台灣方登記持分改變，但這不代表另一方的現金或每月房貸也要照持分比例負擔。若持分與各半出資不同，應由律師或地政士把出資、代墊、返還與退出機制寫清楚。現行約 1.775% 是初期參考利率，不是 40 年固定，2031 仍須依新規則重查。</p>
           </div>
         </div>
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>安排</th><th>登記持分</th><th>現行青安可用上限*</th><th>銀行看收入</th><th>優點</th><th>主要風險／判斷</th></tr></thead>
+            <thead><tr><th>安排</th><th>登記持分</th><th>你們實際金額分擔</th><th>現行青安可用上限*</th><th>銀行看收入</th><th>優點</th><th>主要風險／判斷</th></tr></thead>
             <tbody>
               <tr>
-                <td><strong>台灣籍單獨持有、單獨借款</strong></td><td>100%／0%</td><td class="good">最高 1,000 萬</td><td>主要只看 38,375 實領</td><td>青安額度完整、流程較單純</td><td><span class="warn">單靠 4 萬薪資很可能撐不起 800–960 萬貸款；</span>另一方出錢卻沒有產權，未婚保障最弱。</td>
+                <td><strong>台灣籍單獨持有、台灣方主借</strong></td><td>100%／0%</td><td><strong>50%／50%</strong><br><span class="small muted">不跟持分變動</span></td><td class="good">最高 1,000 萬</td><td>主要只看台灣方收入</td><td>青安額度較完整、流程較單純</td><td>馬來西亞方沒有登記產權；即使兩人私下各付一半，對銀行的借款責任仍以契約上的借款人為準，須特別確認法律與稅務處理。</td>
               </tr>
               <tr class="recommended">
-                <td><strong>台灣主借、共同持有</strong><br><span class="tag">折衷案先詢價</span></td><td>例如 80%／20%</td><td class="good">約 800 萬</td><td>能否納入外籍伴侶收入由銀行審核</td><td>保留多數青安額度，也讓外籍方有登記權利</td><td>所有共有人持分都要一併抵押；持分應盡量對應實際出資，並先做書面協議。</td>
+                <td><strong>台灣主借、共同持有</strong><br><span class="tag">折衷案先詢價</span></td><td>例如 80%／20%</td><td><strong>50%／50%</strong><br><span class="small muted">不跟持分變動</span></td><td class="good">約 800 萬</td><td>能否納入外籍伴侶收入由銀行審核</td><td>保留多數青安額度，也讓外籍方有登記權利</td><td>所有共有人通常都要配合抵押；持分與各半出資不同，應以書面處理權利、返還與退出機制。</td>
               </tr>
               <tr>
-                <td><strong>共同持有、共同承擔一般房貸</strong></td><td>50%／50%</td><td>若只有台灣方合格，約 500 萬；其餘一般貸款</td><td>較有機會同時呈現兩人收入，仍看銀行</td><td>權利較對等，和共同出資較一致</td><td>優惠較少；外籍文件與銀行內規可能使審核較久。</td>
+                <td><strong>共同持有、共同承擔一般房貸</strong></td><td>50%／50%</td><td><strong>50%／50%</strong><br><span class="small muted">本案剛好相同</span></td><td>若只有台灣方合格，約 500 萬；其餘一般貸款</td><td>較有機會同時呈現兩人收入，仍看銀行</td><td>登記權利與各半出資最直覺</td><td>可用青安額度可能較少；外籍文件與銀行內規也可能使審核較久。</td>
               </tr>
-              <tr>
-                <td><strong>各自向不同銀行借</strong></td><td>任意</td><td>外籍方 0</td><td>分開看</td><td>表面上各自負責</td><td><span class="warn">通常不實際。</span>同一房地涉及抵押順位，實務多由同一家銀行做主借／共同借款，而非拆成兩筆第一順位房貸。</td>
+              <tr class="not-applicable">
+                <td><strong>各自向不同銀行借</strong><br><span class="tag inactive">不適用目前規劃</span></td><td>任意</td><td>仍規劃 50%／50%</td><td>外籍方 0</td><td>分開看</td><td>表面上各自負責</td><td><span class="warn">通常不實際。</span>同一房地涉及抵押順位，實務多由同一家銀行做主借／共同借款，而非拆成兩筆第一順位房貸。</td>
               </tr>
-              <tr>
-                <td><strong>馬來西亞籍單獨持有、一般房貸</strong></td><td>0%／100%</td><td>0</td><td>看 48,070 與居留、工作、信用資料</td><td>產權與外籍方出資一致</td><td>不能用青安；核貸成數、期限與文件由各銀行個案審查。</td>
+              <tr class="not-applicable">
+                <td><strong>馬來西亞籍單獨持有、一般房貸</strong><br><span class="tag inactive">不符合目前規劃</span></td><td>0%／100%</td><td>仍規劃 50%／50%</td><td>0</td><td>看 48,070 與居留、工作、信用資料</td><td>持分集中於外籍方</td><td>不能用青安；即使金額各半，台灣方沒有登記產權，核貸成數、期限與文件亦由銀行個案審查。</td>
               </tr>
             </tbody>
           </table>
@@ -663,8 +713,9 @@
             <div class="payment-lines">
               <div class="payment-line"><span>以現行優惠 1.775%、40 年示意</span><strong>約 23,289／月</strong></div>
               <div class="payment-line"><span>規劃壓力測試 3%、40 年</span><strong>約 28,639／月</strong></div>
-              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong>33%</strong></div>
-              <div class="payment-line"><span>占台灣方實領（3%）</span><strong class="warn">75%</strong></div>
+              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong id="pay1000CombinedRatio">33%</strong></div>
+              <div class="payment-line"><span>台灣方負擔 1/2（約 14,320／月）</span><strong id="pay1000TwRatio">37%</strong></div>
+              <div class="payment-line"><span>馬來西亞方負擔 1/2（約 14,320／月）</span><strong id="pay1000MalRatio">30%</strong></div>
             </div>
           </article>
           <article class="payment">
@@ -673,12 +724,13 @@
             <div class="payment-lines">
               <div class="payment-line"><span>以現行優惠 1.775%、40 年示意</span><strong>約 27,947／月</strong></div>
               <div class="payment-line"><span>規劃壓力測試 3%、40 年</span><strong>約 34,367／月</strong></div>
-              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong>40%</strong></div>
-              <div class="payment-line"><span>占台灣方實領（3%）</span><strong class="warn">90%</strong></div>
+              <div class="payment-line"><span>占兩人合計實領（3%）</span><strong id="pay1200CombinedRatio">40%</strong></div>
+              <div class="payment-line"><span>台灣方負擔 1/2（約 17,184／月）</span><strong id="pay1200TwRatio">45%</strong></div>
+              <div class="payment-line"><span>馬來西亞方負擔 1/2（約 17,184／月）</span><strong id="pay1200MalRatio">36%</strong></div>
             </div>
           </article>
         </div>
-        <p class="small muted">本息平均攤還試算，不含寬限期、管理費、房屋稅、地價稅、保險與修繕。1.775% 是目前青安補貼初期的參考利率，不是 2031 保證利率。</p>
+        <p class="small muted">個別占比固定以兩人各負擔 50% 房貸月付計算。本息平均攤還試算不含寬限期、管理費、房屋稅、地價稅、保險與修繕；後續持有成本也在下方按各半顯示。1.775% 是目前青安補貼初期的參考利率，不是 2031 保證利率。</p>
       </div>
     </section>
 
@@ -689,12 +741,12 @@
           <p>把工作拆到對的年份。越早做信用與資金紀錄，2031 跟銀行談判時越有底氣。</p>
         </div>
         <div class="timeline">
-          <div class="time-row"><div class="time-year">2026</div><div class="dot"></div><div class="time-card"><h3>建立共同帳本</h3><p>確認兩人各自出資比例；保存美元定存、薪轉、租金與每月儲蓄紀錄。信用卡全額繳清，不新增信貸。</p></div></div>
-          <div class="time-row"><div class="time-year">2027</div><div class="dot"></div><div class="time-card"><h3>先把法律問題談清楚</h3><p>決定「權利按出資」或其他分配方式；若未婚共同購屋，請律師或地政士準備共有人協議、退出／買回條款、費用分攤與遺囑。</p></div></div>
-          <div class="time-row"><div class="time-year">2028</div><div class="dot"></div><div class="time-card"><h3>做第一次銀行預審</h3><p>找 2–3 家公股銀行與 1–2 家一般銀行，用 100/0、80/20、50/50 三種持分各問一次「可認列收入、額度、成數、期限」。不要只問利率。</p></div></div>
+          <div class="time-row"><div class="time-year">2026</div><div class="dot"></div><div class="time-card"><h3>建立共同帳本</h3><p>頭期、交易費與未來房貸先以兩人各付 50% 記帳；持分另外保留方案欄位。保存美元定存、薪轉、租金與每月儲蓄紀錄，不新增信貸。</p></div></div>
+          <div class="time-row"><div class="time-year">2027</div><div class="dot"></div><div class="time-card"><h3>先把法律問題談清楚</h3><p>決定土地／建物登記持分，並在共同購屋協議中另列「金額各付 50%」。若持分與出資不同，請律師或地政士設計返還、退出／買回與遺囑安排。</p></div></div>
+          <div class="time-row"><div class="time-year">2028</div><div class="dot"></div><div class="time-card"><h3>做第一次銀行預審</h3><p>找 2–3 家公股銀行與 1–2 家一般銀行，以 100/0、80/20、50/50 持分分別詢問可認列收入、額度、成數與期限；三案的實際現金分擔仍固定各半。</p></div></div>
           <div class="time-row"><div class="time-year">2029</div><div class="dot"></div><div class="time-card"><h3>政策檢查點</h3><p>現行青安 3.0 在 7/31 截止。這一年確認是否續辦、年齡／所得／房價限制及共同持有規則；沒有公告就維持一般房貸預算。</p></div></div>
           <div class="time-row"><div class="time-year">2030</div><div class="dot"></div><div class="time-card"><h3>鎖定區域與社區</h3><p>用實價登錄建立 10–15 個社區清單，累積看屋紀錄；同步預留交屋費、裝修與至少 6 個月生活緊急金。</p></div></div>
-          <div class="time-row"><div class="time-year">2031</div><div class="dot"></div><div class="time-card"><h3>預審後再出價</h3><p>先拿銀行初估，再看屋、議價。斡旋／要約寫入「貸款不足可解約或調整」條款；正式簽約前確認持分、借款人與付款來源一致。</p></div></div>
+          <div class="time-row"><div class="time-year">2031</div><div class="dot"></div><div class="time-card"><h3>預審後再出價</h3><p>先拿銀行初估，再看屋、議價。正式簽約前分開確認兩件事：產權要登記多少持分，以及頭期、房貸與持有費由兩人各付 50%。</p></div></div>
         </div>
       </div>
     </section>
@@ -712,7 +764,7 @@
           </article>
           <article>
             <h3>銀行預審</h3><p>備妥薪轉、扣繳憑單／所得清單、勞保、存款、ARC／護照與信用資料，請銀行書面試算可貸額與月付。</p>
-            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>成交價不等於銀行鑑價，廣告成數也不等於你們實際能貸到的金額；外籍收入能否認列，各銀行也不同。</p><p><strong>怎麼做：</strong>同時問 3–5 家銀行，分別試算 100/0、80/20、50/50 持分，逐項問成數、期限、利率、寬限、提前清償、費用與外籍文件。</p><p><strong>完成後得到：</strong>真正可承擔的出價上限，以及哪種持分與借款安排最可行。</p></div></details>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>成交價不等於銀行鑑價，廣告成數也不等於你們實際能貸到的金額；外籍收入能否認列，各銀行也不同。</p><p><strong>怎麼做：</strong>同時問 3–5 家銀行，分別試算 100/0、80/20、50/50 持分，逐項問成數、期限、利率、費用、外籍文件與青安搭配；每一案都明確告知實際頭期與房貸由兩人各付 50%。</p><p><strong>完成後得到：</strong>在金額各半不變的前提下，各種持分可貸額、青安差異與可配合銀行清單。</p></div></details>
           </article>
           <article>
             <h3>看屋與查價</h3><p>用實價登錄看同社區、同樓層／坪數的成交；白天、晚上、雨天各去一次，問鄰居比問廣告更有用。</p>
@@ -728,7 +780,7 @@
           </article>
           <article>
             <h3>簽約與履保</h3><p>找地政士，使用履約保證或價金信託；契約清楚寫持分、現況交屋、瑕疵處理、稅費、點交與違約責任。</p>
-            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>付款與產權移轉不同步時風險最高；你們又是未婚共同購屋，更不能只靠口頭說好。</p><p><strong>怎麼做：</strong>讓地政士或律師逐條核對，將持分、兩人付款來源、瑕疵、稅費、交屋條件、違約與退出機制寫入文件，款項走履保。</p><p><strong>完成後得到：</strong>可執行的責任分配、可追蹤的資金流，以及較安全的價金交付。</p></div></details>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>付款與產權移轉不同步時風險最高；你們又是未婚共同購屋，更不能只靠口頭說好。</p><p><strong>怎麼做：</strong>讓地政士或律師逐條核對，分開寫明土地／建物持分與「頭期、交易費、房貸各付 50%」，再加入瑕疵、交屋、違約與退出機制；兩人款項分別留下憑證並走履保。</p><p><strong>完成後得到：</strong>不把持分和付款混為一談、可追蹤的資金流，以及較安全的價金交付。</p></div></details>
           </article>
           <article>
             <h3>貸款與過戶</h3><p>銀行鑑價、對保、設定抵押；外籍買方準備身分與互惠文件。完成稅費、移轉登記、實價登錄與撥款。</p>
@@ -736,7 +788,7 @@
           </article>
           <article>
             <h3>交屋後</h3><p>點交鑰匙、水電瓦斯、管理費與設備；辦自住稅率、保險與戶籍。把權狀、契約、匯款紀錄永久保存。</p>
-            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>簽約與過戶只代表取得產權；設備瑕疵、帳單、稅率與日後共同負擔仍要有人接手。</p><p><strong>怎麼做：</strong>用照片完成點交紀錄，抄表、收齊鑰匙與遙控器；辦理水電瓦斯、管理與保險，並分別檢查房屋稅與地價稅自住資格。</p><p><strong>完成後得到：</strong>可追究的交屋紀錄、正確帳務與稅務狀態，以及兩人持續維護房屋的共同帳本。</p></div></details>
+            <details class="step-detail"><summary>展開詳細說明</summary><div><p><strong>為什麼：</strong>簽約與過戶只代表取得產權；設備瑕疵、帳單、稅率與日後持有成本仍要由兩人共同處理。</p><p><strong>怎麼做：</strong>用照片完成點交紀錄，抄表、收齊鑰匙與遙控器；辦理水電瓦斯、管理與保險，分別檢查房屋稅與地價稅自住資格，費用持續各付 50%。</p><p><strong>完成後得到：</strong>可追究的交屋紀錄、正確帳務與稅務狀態，以及兩人持續維護房屋的共同帳本。</p></div></details>
           </article>
         </div>
       </div>
@@ -753,13 +805,13 @@
           <article class="after-task" data-icon="🔑"><span class="when">交屋當天～7 天</span><h3>完成「有證據」的點交</h3><ul><li>重新驗屋，瑕疵逐項拍照、錄影並簽名</li><li>抄錄水、電、瓦斯表度數與分攤日</li><li>清點鑰匙、門禁卡、遙控器、設備與保固</li><li>確認管理費、公共基金及前屋主欠費已結清</li></ul></article>
           <article class="after-task" data-icon="📮"><span class="when">入住前 30 天</span><h3>把帳單與保障接過來</h3><ul><li>水、電、瓦斯及管委會資料辦理過戶</li><li>設定房貸扣款、帳單地址與共同記帳方式</li><li>確認銀行要求的住宅火災／地震基本保險</li><li>保留至少 6 個月生活費，不投入裝潢</li></ul></article>
           <article class="after-task" data-icon="🗓️"><span class="when">兩種自住優惠分開辦</span><h3>設籍後主動確認稅率</h3><ul><li>房屋稅自住原則上在 3/22 前申報</li><li>地價稅自用住宅用地在 9/22 前申請</li><li>兩者條件與申請不同，不會自動互通</li><li>2031 仍須向房屋所在地稅捐機關重查</li></ul></article>
-          <article class="after-task" data-icon="🧰"><span class="when">每月／每年持續</span><h3>養房比買房更長久</h3><ul><li>每月：房貸、管理費、車位與修繕準備金</li><li>每年 5 月：留意房屋稅繳納通知</li><li>每年 11 月：留意地價稅繳納通知</li><li>每年檢查保險、設備保養與共同出資帳</li></ul></article>
+          <article class="after-task" data-icon="🧰"><span class="when">每月／每年持續</span><h3>養房比買房更長久</h3><ul><li>房貸、管理費、車位與修繕準備金各付 50%</li><li>每年 5 月：留意房屋稅繳納通知</li><li>每年 11 月：留意地價稅繳納通知</li><li>每年檢查保險、設備保養與共同出資帳</li></ul></article>
         </div>
 
         <div class="holding-tool" aria-label="買房後每月持有成本試算器">
           <div class="holding-controls">
             <h3>買房後，每月還要留多少？</h3>
-            <p>房價會沿用上方的設定；房貸以貸 8 成、年利率 3%、40 年本息平均攤還做壓力測試。</p>
+          <p>房價會沿用上方的設定；房貸以貸 8 成、年利率 3%、40 年本息平均攤還做壓力測試。下方每項也會顯示 50/50 的每人負擔。</p>
             <div class="control">
               <label for="postManagement"><span>管理費＋車位／月</span><span class="manual-entry"><span class="suffix">NT$</span><input id="postManagementManual" type="number" min="0" max="30000" step="100" value="3000" inputmode="numeric" aria-label="手動輸入每月管理費與車位費"></span></label>
               <input id="postManagement" type="range" min="0" max="30000" step="100" value="3000">
@@ -775,12 +827,12 @@
           </div>
           <div class="holding-results" aria-live="polite">
             <div class="cost-grid">
-              <div class="cost-card"><span>房貸月付（3% 壓測）</span><strong id="postMortgage">28,639</strong></div>
-              <div class="cost-card"><span>管理費＋車位／月</span><strong id="postManagementOut">3,000</strong></div>
-              <div class="cost-card"><span>稅金＋保險月均</span><strong id="postAnnualMonthly">2,000</strong></div>
-              <div class="cost-card"><span>修繕準備金／月</span><strong id="postRepairMonthly">4,167</strong></div>
-              <div class="cost-card total"><span>每月完整持有成本</span><strong id="postTotalMonthly">37,806</strong></div>
-              <div class="cost-card"><span>每年非房貸持有費</span><strong id="postAnnualTotal">110,000</strong></div>
+              <div class="cost-card"><span>房貸月付（3% 壓測）</span><strong id="postMortgage">28,639</strong><small id="postMortgageEach">50/50：每人約 14,320</small></div>
+              <div class="cost-card"><span>管理費＋車位／月</span><strong id="postManagementOut">3,000</strong><small id="postManagementEach">50/50：每人 1,500</small></div>
+              <div class="cost-card"><span>稅金＋保險月均</span><strong id="postAnnualMonthly">2,000</strong><small id="postAnnualMonthlyEach">50/50：每人 1,000</small></div>
+              <div class="cost-card"><span>修繕準備金／月</span><strong id="postRepairMonthly">4,167</strong><small id="postRepairMonthlyEach">50/50：每人約 2,083</small></div>
+              <div class="cost-card total"><span>每月完整持有成本</span><strong id="postTotalMonthly">37,806</strong><small id="postTotalMonthlyEach">50/50：每人約 18,903</small></div>
+              <div class="cost-card"><span>每年非房貸持有費</span><strong id="postAnnualTotal">110,000</strong><small id="postAnnualTotalEach">50/50：每人 55,000</small></div>
             </div>
             <p class="holding-note">這是現金流預留額，不是稅單預估。房屋稅與地價稅依房屋／土地評定資料與適用稅率計算，不是直接用成交價乘百分比；請拿到標的後向當地稅捐機關查詢。</p>
           </div>
@@ -798,18 +850,18 @@
         <details open><summary>大樓與管委會</summary><div><ul class="checkgrid"><li>近 2–3 年區權會／管委會會議紀錄</li><li>公共基金餘額與重大欠費戶</li><li>電梯年檢、維修與預計汰換</li><li>外牆、防水、消防與公共管線工程</li><li>管理費、車位清潔費與臨時分攤</li><li>垃圾、包裹、門禁與夜間管理</li></ul></div></details>
         <details><summary>房屋本體</summary><div><ul class="checkgrid"><li>漏水、壁癌、窗框與浴室防水</li><li>水壓、熱水、電力容量與管線更新</li><li>採光、日照、西曬、噪音與異味</li><li>樓上／隔壁生活聲、機房與水塔噪音</li><li>室內現況是否與平面圖一致</li><li>氯離子、耐震、海砂／輻射屋資料</li></ul></div></details>
         <details><summary>產權與土地</summary><div><ul class="checkgrid"><li>建物用途須含住、住宅、套房或公寓</li><li>土地／建物持分、抵押、查封、預告登記</li><li>車位是獨立權狀、共同持分或使用權</li><li>頂樓、陽台、夾層是否違建</li><li>道路用地、都市計畫與嫌惡設施</li><li>淹水、土壤液化、山坡地與斷層資訊</li></ul></div></details>
-        <details><summary>未婚共同購屋</summary><div><ul class="checkgrid"><li>頭期、房貸、稅費、裝修各自比例</li><li>持分是否對應實際出資</li><li>一方失業、分手、離台時如何處理</li><li>出售、出租、增貸是否需雙方同意</li><li>一方過世時：遺囑、保險與繼承安排</li><li>匯款用途寫清楚，避免被認定贈與</li></ul><p class="small">未婚伴侶不是法定配偶，沒有配偶繼承順位與夫妻財產制保護。出資與登記不一致可能衍生贈與稅疑義；2026 年每位贈與人全年免稅額為 244 萬，但 2031 金額仍要重新查。</p></div></details>
+        <details><summary>未婚共同購屋</summary><div><ul class="checkgrid"><li>頭期、房貸、稅費、裝修均由兩人各付 50%</li><li>土地與建物持分另行選擇，不直接套用付款比例</li><li>持分與各半出資不同時，如何記錄權利與返還</li><li>一方臨時代墊如何返還，不因此自動改變持分</li><li>一方失業、分手、離台時如何處理</li><li>出售、出租、增貸是否需雙方同意</li><li>一方過世時：遺囑、保險與繼承安排</li><li>匯款用途寫清楚，避免被認定贈與</li></ul><p class="small">未婚伴侶不是法定配偶，沒有配偶繼承順位與夫妻財產制保護。金額雖然各半，仍應保留每一筆付款證明；若實際出資與登記持分不一致，可能衍生權利歸屬與贈與稅疑義，應在簽約前請律師、地政士與稅務專業人士確認。2026 年每位贈與人全年免稅額為 244 萬，但 2031 金額仍要重新查。</p></div></details>
       </div>
     </section>
 
     <section>
       <div class="wrap decision">
-        <div><p class="eyebrow" style="color:#f0b94d">BOTTOM LINE</p><h2>現在最務實的結論</h2><p>不要先為了青安犧牲產權公平，也不要先把兩份收入都當成銀行一定會認列。</p></div>
+        <div><p class="eyebrow" style="color:#f0b94d">BOTTOM LINE</p><h2>現在最務實的結論</h2><p>金額分擔固定各半；產權持分則獨立比較，不再把兩者綁成同一比例。</p></div>
         <div><ol>
           <li><strong>把 1,000 萬當主目標、1,200 萬當條件式上限。</strong>在沒有既有存款與加薪資料時，完整購屋現金 280 萬較接近；336 萬需提高儲蓄或延後。</li>
-          <li><strong>2028 前先問銀行 80/20 與 50/50 兩案。</strong>重點是銀行是否接受馬來西亞籍者的收入與共同負擔，不只是利率。</li>
-          <li><strong>2031 不預設青安。</strong>若 2029–2030 公告續辦，再比較「台灣主借＋部分青安」和「共同一般房貸」的總成本與權利。</li>
-          <li><strong>簽任何斡旋前完成共有人協議。</strong>持分、出資、分手／過世／離台、買回與出售機制，都應由地政士或律師落成文件。</li>
+          <li><strong>2028 前詢問 80/20 與 50/50 共同持有方案，並保留 100/0 作比較。</strong>每個方案都以兩人實際各付一半為前提，確認銀行是否接受收入與借款安排。</li>
+          <li><strong>2031 不預設青安。</strong>若續辦，再比較不同持分下台灣方可用的優惠額度與整體成本；優惠額度不改變兩人各半付款。</li>
+          <li><strong>簽任何斡旋前完成共有人協議。</strong>把「登記持分」與「頭期、房貸、持有費各付 50%」分成兩條寫明，另約定代墊返還、分手／過世／離台、買回與出售機制。</li>
         </ol></div>
       </div>
     </section>
@@ -874,6 +926,12 @@
       $('postRepairMonthly').textContent = money(repairMonthly);
       $('postTotalMonthly').textContent = money(totalMonthly);
       $('postAnnualTotal').textContent = money(annualNonMortgage);
+      $('postMortgageEach').textContent = `50/50：每人約 ${money(mortgage / 2)}`;
+      $('postManagementEach').textContent = `50/50：每人 ${money(management / 2)}`;
+      $('postAnnualMonthlyEach').textContent = `50/50：每人 ${money(annualMonthly / 2)}`;
+      $('postRepairMonthlyEach').textContent = `50/50：每人約 ${money(repairMonthly / 2)}`;
+      $('postTotalMonthlyEach').textContent = `50/50：每人約 ${money(totalMonthly / 2)}`;
+      $('postAnnualTotalEach').textContent = `50/50：每人 ${money(annualNonMortgage / 2)}`;
     }
 
     function updateCalculator() {
@@ -904,6 +962,7 @@
       const down = price * .20;
       const buffer = price * .08;
       const target = down + buffer;
+      const downPaymentRate = down > 0 ? saved / down * 100 : 0;
       const gap = target - saved;
       const ratio = Math.max(0, saved / target * 100);
       const existingTotal = malExisting + twExisting;
@@ -920,6 +979,8 @@
       $('essentialCost').textContent = money(essentialCost);
       $('monthlySaving').textContent = money(monthlySaving);
       $('savingRate').textContent = `${Math.round(savingRate)}%`;
+      $('tip-saving-rate').textContent = `兩人合計可存 ÷ 兩人合計實領。依目前設定：${money(monthlySaving)} ÷ ${money(combinedNet)}，約為 ${Math.round(savingRate)}%。`;
+      $('downPaymentRate').textContent = `${Math.round(downPaymentRate)}%`;
       $('monthsToTarget').textContent = Number.isFinite(monthsToTarget) ? `${monthsToTarget} 個月` : '目前無法達成';
       $('malBudgetSave').textContent = money(malMonthly);
       $('twBudgetSave').textContent = money(twMonthly);
@@ -933,7 +994,26 @@
       $('target').textContent = wan(target);
       $('down').textContent = wan(down);
       $('buffer').textContent = wan(buffer);
-      $('usdAsset').textContent = wan(usdAsset);
+      $('targetEach').textContent = `50/50 分攤：每人約 ${wan(target / 2)}`;
+      $('downEach').textContent = `50/50 分攤：每人約 ${wan(down / 2)}`;
+      $('bufferEach').textContent = `50/50 分攤：每人約 ${wan(buffer / 2)}`;
+      const personalTarget = target / 2;
+      const shareStatus = (personalSaved) => {
+        const personalGap = personalTarget - personalSaved;
+        return personalGap <= 0
+          ? `50% 個人現金目標 ${wan(personalTarget)}｜超出 ${wan(Math.abs(personalGap))}`
+          : `50% 個人現金目標 ${wan(personalTarget)}｜尚差 ${wan(personalGap)}`;
+      };
+      $('malShareStatus').textContent = shareStatus(malSaved);
+      $('twShareStatus').textContent = shareStatus(twSaved);
+      $('usdCumulativeHint').textContent = `按目前設定，累計 ${months} 個月約 ${wan(usdAsset)}。`;
+      const ratioOfIncome = (payment, income) => income > 0 ? `${Math.round(payment / income * 100)}%` : '—';
+      $('pay1000CombinedRatio').textContent = ratioOfIncome(28639, combinedNet);
+      $('pay1000TwRatio').textContent = ratioOfIncome(28639 / 2, twNet);
+      $('pay1000MalRatio').textContent = ratioOfIncome(28639 / 2, malNet);
+      $('pay1200CombinedRatio').textContent = ratioOfIncome(34367, combinedNet);
+      $('pay1200TwRatio').textContent = ratioOfIncome(34367 / 2, twNet);
+      $('pay1200MalRatio').textContent = ratioOfIncome(34367 / 2, malNet);
       $('ratio').textContent = `${Math.round(ratio)}%`;
       $('progressBar').style.width = `${Math.min(100, ratio)}%`;
       updateHoldingCosts(price);
@@ -993,6 +1073,30 @@
         manualEl.value = toManual(next);
         updateCalculator();
       });
+    });
+
+    const closeMetricTips = (except = null) => {
+      document.querySelectorAll('.metric-label.is-open').forEach((label) => {
+        if (label === except) return;
+        label.classList.remove('is-open');
+        label.querySelector('.info-tip')?.setAttribute('aria-expanded', 'false');
+      });
+    };
+
+    document.querySelectorAll('.info-tip').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const label = button.closest('.metric-label');
+        const shouldOpen = !label.classList.contains('is-open');
+        closeMetricTips(label);
+        label.classList.toggle('is-open', shouldOpen);
+        button.setAttribute('aria-expanded', String(shouldOpen));
+      });
+    });
+
+    document.addEventListener('click', () => closeMetricTips());
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMetricTips();
     });
 
     updateCalculator();
